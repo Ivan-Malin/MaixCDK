@@ -83,5 +83,5 @@ set(CMAKE_CXX_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -Wl,--start-group -lmaixcam_lib 
 # set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,--start-group vision/libvision.a -lmaixcam_lib -Wl,--end-group" PARENT_SCOPE)
 
 # register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
-# register_component()
+register_component()
 
