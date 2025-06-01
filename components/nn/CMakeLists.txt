@@ -13,7 +13,7 @@ else()
     append_srcs_dir(ADD_SRCS "port/linux")
 endif()
 
-register_component()
+
 
 # Config enable component2 or not in Kconfig
 ################# Add include #################
