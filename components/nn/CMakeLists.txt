@@ -76,6 +76,12 @@ register_component()
 # set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -Wl,--start-group libmaix/libtest.a -ltest2 -Wl,--end-group" PARENT_SCOPE)
 ###############################################
 
+set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -Wl,--start-group libmaix/libtest.a -ltest2 -lmaixcam_lib -Wl,--end-group" PARENT_SCOPE)
+set(CMAKE_CXX_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -Wl,--start-group libmaix/libtest.a -ltest2 -lmaixcam_lib -Wl,--end-group" PARENT_SCOPE)
+
+# set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -Wl,--start-group vision/libvision.a -lmaixcam_lib -Wl,--end-group" PARENT_SCOPE)
+# set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,--start-group vision/libvision.a -lmaixcam_lib -Wl,--end-group" PARENT_SCOPE)
+
 # register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
 # register_component()
 
