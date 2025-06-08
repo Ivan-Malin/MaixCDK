@@ -59,6 +59,7 @@ int _main(int argc, char* argv[])
 
     uint64_t last_ms = time::ticks_ms();
     // int cnt = 0;
+    image::Image *rgn_img = region->get_canvas();
     while(!app::need_exit()) {
         // cnt ++;
         // image::Color color = image::COLOR_BLACK;
@@ -82,8 +83,22 @@ int _main(int argc, char* argv[])
             continue;
         }
 
-        image::Image *rgn_img = region->get_canvas();
-        rgn_img->draw_image(0, 0, *img);
+        // Out
+        img->to_format(image::FMT_BGR888);
+        Bytes* data_out = img->to_bytes(bool copy);
+        uint8_t* data_out_raw = data_in->begin();
+        
+        // In
+        int width = img->width();
+        int height = height->width();
+        len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
+        uint8_t* data_in_raw = data_out_raw;
+
+        Bytes* data_in = Bytes(data_in_raw, uint32_t len);
+        maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
+
+
+        rgn_img->draw_image(0, 0, *img_transfered);
         region->update_canvas();
 
         
