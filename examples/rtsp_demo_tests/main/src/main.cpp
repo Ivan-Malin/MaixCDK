@@ -59,7 +59,7 @@ int _main(int argc, char* argv[])
 
     uint64_t last_ms = time::ticks_ms();
     // int cnt = 0;
-    image::Image *rgn_img = region->get_canvas();
+    image::Image *rgn_img = nullptr;
     while(!app::need_exit()) {
         // cnt ++;
         // image::Color color = image::COLOR_BLACK;
@@ -97,12 +97,12 @@ int _main(int argc, char* argv[])
         Bytes* data_in = Bytes(data_in_raw, uint32_t len);
         maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
 
-
+        rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
         region->update_canvas();
 
         
-        delete rgn_img;
+        // delete rgn_img;
         delete img;
         uint64_t curr_ms = time::ticks_ms();
         log::info("loop use %lld ms\r\n", curr_ms - last_ms);
