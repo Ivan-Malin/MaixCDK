@@ -59,7 +59,6 @@ int _main(int argc, char* argv[])
 
     uint64_t last_ms = time::ticks_ms();
     // int cnt = 0;
-    image::Image *rgn_img = nullptr;
     while(!app::need_exit()) {
         // cnt ++;
         // image::Color color = image::COLOR_BLACK;
@@ -84,24 +83,36 @@ int _main(int argc, char* argv[])
         }
 
         // Out
+        log::info("A1");
         img->to_format(image::FMT_BGR888);
+        log::info("A2");
         Bytes* data_out = img->to_bytes(true);
+        log::info("A3");
         uint8_t* data_out_raw = data_out->begin();
+        log::info("A4");
         
         // In
         int width = img->width();
         int height = img->height();
         uint32_t len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
+        log::info("A5");
         uint8_t* data_in_raw = data_out_raw;
+        log::info("A6");
 
         Bytes* data_in = new Bytes(data_in_raw, len);
+        log::info("A7");
         maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
+        log::info("A8");
 
-        rgn_img = region->get_canvas();
+        image::Image *rgn_img = region->get_canvas();
+        log::info("A9");
         rgn_img->draw_image(0, 0, *img_transfered);
+        log::info("A10");
         region->update_canvas();
+        log::info("A11");
 
-        
+        delete img_transfered;
+        delete data_in;
         delete rgn_img;
         delete img;
         uint64_t curr_ms = time::ticks_ms();
