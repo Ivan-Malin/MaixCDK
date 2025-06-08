@@ -83,14 +83,14 @@ int _main(int argc, char* argv[])
         }
 
         // Out
-        log::info("A1");
+        // log::info("A1");
         image::Image* img_bgr888 = img->to_format(image::FMT_BGR888);
-        log::info("A2");
+        // log::info("A2");
         Bytes* data_out = img->to_bytes(true);
         delete img_bgr888;
-        log::info("A3");
+        // log::info("A3");
         uint8_t* data_out_raw = data_out->begin();
-        log::info("A4");
+        // log::info("A4");
         
         // In
         int width = img->width();
@@ -101,7 +101,6 @@ int _main(int argc, char* argv[])
         Bytes* data_in = new Bytes(data_in_raw, data_out->size());
         maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
 
-        img_transfered->to_format(image::FMT_BGRA8888);
         image::Image *rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
         region->update_canvas();
