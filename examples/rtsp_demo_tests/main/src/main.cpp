@@ -84,9 +84,9 @@ int _main(int argc, char* argv[])
 
         // Out
         // log::info("A1");
-        image::Image* img_bgr888 = img->to_format(image::FMT_RGB888);
+        image::Image* img_bgr888 = img->to_format(image::FMT_BGR888);
         // log::info("A2");
-        Bytes* data_out = img->to_bytes(true);
+        Bytes* data_out = img_bgr888->to_bytes(true);
         delete img_bgr888;
         // log::info("A3");
         uint8_t* data_out_raw = data_out->begin();
