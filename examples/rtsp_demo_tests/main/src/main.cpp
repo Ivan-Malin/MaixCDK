@@ -38,47 +38,42 @@ int _main(int argc, char* argv[])
     log::info("Camera width:%d height:%d format:%s fps:%d buffer_num:%d", cam_w, cam_h, image::fmt_names[cam_fmt].c_str(), cam_fps, cam_buffer_num);
 
     camera::Camera cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
-    camera::Camera *cam2 = cam.add_channel(640, 480);
-    display::Display disp = display::Display();
     auto audio_recorder = audio::Recorder();
     rtsp::Rtsp rtsp = rtsp::Rtsp();
     rtsp.bind_camera(&cam);
     rtsp.bind_audio_recorder(&audio_recorder);
-    rtsp::Region *region = rtsp.add_region(0, 0, 200, 100);
-    rtsp::Region *region3 = rtsp.add_region(400, 200, 200, 100);
-
-    image::Image *rgn_img = region3->get_canvas();
-    rgn_img->draw_rect(0, 0, rgn_img->width(), rgn_img->height(), image::COLOR_BLUE, 5);
-    rgn_img->draw_string(0, 0, "hello");
-    region3->update_canvas();
-
+    
+    // Show debug info
     log::info("url:%s", rtsp.get_url().c_str());
     std::vector<std::string> url = rtsp.get_urls();
     for (size_t i = 0; i < url.size(); i ++) {
         log::info("url[%d]:%s", i, url[i].c_str());
     }
     err::check_raise(rtsp.start());
+    
+
+    // Part of overlapping image
+    camera::Camera *cam2 = cam.add_channel(320, 240);
+    rtsp::Region *region = rtsp.add_region(0, 0, rgn_img->width(), rgn_img->height());
+    
 
     uint64_t last_ms = time::ticks_ms();
-    int cnt = 0;
+    // int cnt = 0;
     while(!app::need_exit()) {
-        cnt ++;
-        image::Color color = image::COLOR_BLACK;
-        if (cnt == 1) {
-            color = image::COLOR_BLACK;
-        } else if (cnt == 2) {
-            color = image::COLOR_RED;
-        } else if (cnt == 3) {
-            color = image::COLOR_GREEN;
-        } else {
-            color = image::COLOR_BLUE;
-            cnt = 0;
-        }
-        rgn_img = region->get_canvas();
-        rgn_img->draw_rect(0, 0, rgn_img->width(), rgn_img->height(), color, -1);
-        region->update_canvas();
-        delete rgn_img;
-
+        // cnt ++;
+        // image::Color color = image::COLOR_BLACK;
+        // if (cnt == 1) {
+        //     color = image::COLOR_BLACK;
+        // } else if (cnt == 2) {
+        //     color = image::COLOR_RED;
+        // } else if (cnt == 3) {
+        //     color = image::COLOR_GREEN;
+        // } else {
+        //     color = image::COLOR_BLUE;
+        //     cnt = 0;
+        // }
+        
+        // Draw image over small region of output image
         maix::image::Image *img = nullptr;
         try {
             img = cam2->read();
@@ -87,7 +82,11 @@ int _main(int argc, char* argv[])
             continue;
         }
 
-        disp.show(*img);
+        rgn_img = region->get_canvas();
+        rgn_img->draw_img(0, 0, rgn_img->width(), rgn_img->height(), color, -1);
+        region->update_canvas();
+        delete rgn_img;
+
         delete img;
         uint64_t curr_ms = time::ticks_ms();
         log::info("loop use %lld ms\r\n", curr_ms - last_ms);
@@ -95,7 +94,6 @@ int _main(int argc, char* argv[])
     }
 
     rtsp.stop();
-    delete cam2;
 
     return 0;
 }
