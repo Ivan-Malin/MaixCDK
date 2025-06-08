@@ -95,22 +95,16 @@ int _main(int argc, char* argv[])
         int width = img->width();
         int height = img->height();
         uint32_t len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
-        log::info("A5 len_calculated, len_actual: %d, %d", (int)len, (int) data_out->size());
         uint8_t* data_in_raw = data_out_raw;
-        log::info("A6");
 
         Bytes* data_in = new Bytes(data_in_raw, data_out->size());
-        log::info("A7");
         maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
-        log::info("A8");
 
         image::Image *rgn_img = region->get_canvas();
-        log::info("A9");
         rgn_img->draw_image(0, 0, *img_transfered);
-        log::info("A10");
         region->update_canvas();
-        log::info("A11");
 
+        delete data_out;
         delete img_transfered;
         delete data_in;
         delete rgn_img;
