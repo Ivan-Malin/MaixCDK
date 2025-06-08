@@ -54,7 +54,7 @@ int _main(int argc, char* argv[])
 
     // Part of overlapping image
     camera::Camera *cam2 = cam.add_channel(320, 240);
-    rtsp::Region *region = rtsp.add_region(0, 0, 400, 400);
+    rtsp::Region *region = rtsp.add_region(0, 0, 320, 240);
     
 
     uint64_t last_ms = time::ticks_ms();
@@ -83,19 +83,15 @@ int _main(int argc, char* argv[])
         }
 
         // Out
-        // log::info("A1");
         image::Image* img_bgr888 = nullptr;
         if (img->format() != image::FMT_BGR888) {
             img_bgr888 = img->to_format(image::FMT_BGR888);
         } else {
             img_bgr888 = img->copy();
         }
-        // log::info("A2");
         Bytes* data_out = img_bgr888->to_bytes(true);
         delete img_bgr888;
-        // log::info("A3");
         uint8_t* data_out_raw = data_out->begin();
-        // log::info("A4");
         
         // In
         int width = img->width();
