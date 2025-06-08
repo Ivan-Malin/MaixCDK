@@ -86,12 +86,12 @@ int _main(int argc, char* argv[])
         // Out
         img->to_format(image::FMT_BGR888);
         Bytes* data_out = img->to_bytes(bool copy);
-        uint8_t* data_out_raw = data_in->begin();
+        uint8_t* data_out_raw = data_out->begin(true);
         
         // In
         int width = img->width();
-        int height = height->width();
-        len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
+        int height = img->height();
+        uint32_t len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
         uint8_t* data_in_raw = data_out_raw;
 
         Bytes* data_in = Bytes(data_in_raw, uint32_t len);
