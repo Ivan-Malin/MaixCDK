@@ -100,6 +100,7 @@ int _main(int argc, char* argv[])
         Bytes* data_in = new Bytes(data_in_raw, data_out->size());
         maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
 
+        img_transfered>to_format(image::FMT_BGRA8888);
         image::Image *rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
         region->update_canvas();
