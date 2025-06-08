@@ -82,11 +82,12 @@ int _main(int argc, char* argv[])
             continue;
         }
 
-        rgn_img = region->get_canvas();
-        rgn_img->draw_img(0, 0, rgn_img->width(), rgn_img->height(), color, -1);
+        image::Image *rgn_img = region->get_canvas();
+        rgn_img->draw_img(0, 0, img);
         region->update_canvas();
+        
+        
         delete rgn_img;
-
         delete img;
         uint64_t curr_ms = time::ticks_ms();
         log::info("loop use %lld ms\r\n", curr_ms - last_ms);
