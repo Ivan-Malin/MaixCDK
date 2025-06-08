@@ -34,7 +34,7 @@ endif()
 ###### Add required/dependent components ######
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
-list(APPEND ADD_REQUIREMENTS cppzmq msgpack yaml nlohmann_json::nlohmann_json)
+list(APPEND ADD_REQUIREMENTS cppzmq msgpack yaml json)
 
 list(APPEND ADD_REQUIREMENTS basic)
 if(PLATFORM_LINUX)
