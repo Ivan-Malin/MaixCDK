@@ -95,7 +95,7 @@ int _main(int argc, char* argv[])
         int width = img->width();
         int height = img->height();
         uint32_t len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
-        log::info("A5 len_calculated, len_actual: %d, %d", (int)len, (int)) data_out->size();
+        log::info("A5 len_calculated, len_actual: %d, %d", (int)len, (int) data_out->size());
         uint8_t* data_in_raw = data_out_raw;
         log::info("A6");
 
