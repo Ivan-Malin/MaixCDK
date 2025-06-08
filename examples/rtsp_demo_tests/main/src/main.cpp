@@ -54,7 +54,7 @@ int _main(int argc, char* argv[])
 
     // Part of overlapping image
     camera::Camera *cam2 = cam.add_channel(320, 240);
-    rtsp::Region *region = rtsp.add_region(0, 0, 320, 240);
+    rtsp::Region *region = rtsp.add_region(0, 0, 400, 400);
     
 
     uint64_t last_ms = time::ticks_ms();
@@ -84,7 +84,7 @@ int _main(int argc, char* argv[])
 
         // Out
         // log::info("A1");
-        image::Image* img_bgr888 = img->to_format(image::FMT_BGR888);
+        image::Image* img_bgr888 = img->to_format(image::FMT_RGB888);
         // log::info("A2");
         Bytes* data_out = img->to_bytes(true);
         delete img_bgr888;
@@ -104,11 +104,11 @@ int _main(int argc, char* argv[])
         image::Image *rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
         region->update_canvas();
+        delete rgn_img;
 
         delete data_out;
         delete img_transfered;
         delete data_in;
-        delete rgn_img;
         delete img;
         uint64_t curr_ms = time::ticks_ms();
         log::info("loop use %lld ms\r\n", curr_ms - last_ms);
