@@ -102,7 +102,7 @@ int _main(int argc, char* argv[])
         region->update_canvas();
 
         
-        // delete rgn_img;
+        delete rgn_img;
         delete img;
         uint64_t curr_ms = time::ticks_ms();
         log::info("loop use %lld ms\r\n", curr_ms - last_ms);
