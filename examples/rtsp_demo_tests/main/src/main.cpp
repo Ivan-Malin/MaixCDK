@@ -94,7 +94,7 @@ int _main(int argc, char* argv[])
         uint32_t len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
         uint8_t* data_in_raw = data_out_raw;
 
-        Bytes* data_in = Bytes(data_in_raw, len);
+        Bytes* data_in = new Bytes(data_in_raw, len);
         maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
 
         rgn_img = region->get_canvas();
