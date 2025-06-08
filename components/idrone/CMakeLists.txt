@@ -32,6 +32,7 @@ endif()
 
 
 ###### Add required/dependent components ######
+find_package(Threads REQUIRED)
 list(APPEND ADD_REQUIREMENTS cppzmq msgpack yaml Threads::Threads nlohmann_json::nlohmann_json)
 
 list(APPEND ADD_REQUIREMENTS basic)
