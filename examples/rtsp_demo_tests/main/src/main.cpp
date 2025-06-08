@@ -83,7 +83,7 @@ int _main(int argc, char* argv[])
         }
 
         image::Image *rgn_img = region->get_canvas();
-        rgn_img->draw_image(0, 0, img);
+        rgn_img->draw_image(0, 0, *img);
         region->update_canvas();
 
         
