@@ -106,7 +106,7 @@ int _main(int argc, char* argv[])
         std::string string_in = string_out;
         Packet* camera_img_packet_in = Packet::deserialize_image(string_in.data(), string_in.size());
 
-        Bytes* data_in = new Bytes(camera_img_packet_in->frame->data, camera_img_packet_in->frame->size);
+        Bytes* data_in = new Bytes(camera_img_packet_in->frame->data_ptr, camera_img_packet_in->frame->size);
         maix::image::Image *img_transfered = image::from_bytes((int) camera_img_packet_in->data["shape"][1], (int) camera_img_packet_in->data["shape"][0], image::FMT_BGR888, data_in);
 
         image::Image *rgn_img = region->get_canvas();
