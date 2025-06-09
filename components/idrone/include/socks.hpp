@@ -226,7 +226,7 @@ public:
         } else {
             img_bgr888 = img->copy();
         }
-        Bytes* data_out = img_bgr888->to_bytes(true);
+        maix::Bytes* data_out = img_bgr888->to_bytes(true);
         delete img_bgr888;
         uint8_t* data_out_raw = data_out->begin();
         json metadata = {
@@ -295,8 +295,8 @@ public:
 
     static maix::image::Image* packet_to_maix_image(const Packet* packet) {
 
-        Bytes* data_in = new Bytes(packet->frame->data_ptr, packet->frame->size);
-        maix::maix::image::Image *img_transfered = maix::image::from_bytes((int) packet->data["shape"][1], (int) packet->data["shape"][0], maix::image::FMT_BGR888, data_in);
+        maix::Bytes* data_in = new maix::Bytes(packet->frame->data_ptr, packet->frame->size);
+        maix::image::Image *img_transfered = maix::image::from_bytes((int) packet->data["shape"][1], (int) packet->data["shape"][0], maix::image::FMT_BGR888, data_in);
 
         delete data_in;
 
