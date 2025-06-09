@@ -37,6 +37,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
 find_package(cppzmq)
 list(APPEND ADD_REQUIREMENTS cppzmq msgpack yaml json)
 
+list(APPEND ADD_STATIC_LIB cppzmq)
+
 list(APPEND ADD_REQUIREMENTS basic)
 if(PLATFORM_LINUX)
     list(APPEND ADD_REQUIREMENTS )
