@@ -54,6 +54,8 @@ set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
 
 set(msgpack_lib_dir "lib")
 set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so
+                                   ${msgpack_lib_dir}/libmsgpackc.so.2
+                                   ${msgpack_lib_dir}/libmsgpackc.so.2.0.0
                                    ${msgpack_lib_dir}/libatomic.so.1
                                    ${msgpack_lib_dir}/libatomic.so.1.2.0
 )

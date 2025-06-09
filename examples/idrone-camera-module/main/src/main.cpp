@@ -93,12 +93,13 @@ int _main(int argc, char* argv[])
         Bytes* data_out = img_bgr888->to_bytes(true);
         delete img_bgr888;
         uint8_t* data_out_raw = data_out->begin();
+        json metadata = {{"shape", [img_bgr888->height(), img_bgr888->width(), 3]}, {"dtype": "uint8"}, {"emit_time_ns",0}};
+        Packet* camera_img_packet_out = new Packet((json) metadata, (uint64_t) metadata["emit_time_ns"].get<uint64_t>(), 
+                                                   (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
         
         // In
-        int width = img->width();
-        int height = img->height();
         uint32_t len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
-        uint8_t* data_in_raw = data_out_raw;
+        uint8_t* data_in_raw = camera_img_packet_out->frame->data_ptr;
 
         Bytes* data_in = new Bytes(data_in_raw, data_out->size());
         maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
@@ -108,6 +109,7 @@ int _main(int argc, char* argv[])
         region->update_canvas();
         delete rgn_img;
 
+        delete camera_img_packet_out;
         delete data_out;
         delete img_transfered;
         delete data_in;
