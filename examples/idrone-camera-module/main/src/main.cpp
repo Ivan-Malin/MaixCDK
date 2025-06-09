@@ -102,11 +102,11 @@ int _main(int argc, char* argv[])
                                                    (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
         
         // In
-        uint32_t len = width * width * 3; // image::fmt_size[image::FMT_BGR888]
+        uint32_t len = camera_img_packet_out->frame->size; // image::fmt_size[image::FMT_BGR888]
         uint8_t* data_in_raw = camera_img_packet_out->frame->data_ptr;
 
         Bytes* data_in = new Bytes(data_in_raw, data_out->size());
-        maix::image::Image *img_transfered = image::from_bytes(width, height, image::FMT_BGR888, data_in);
+        maix::image::Image *img_transfered = image::from_bytes((int) camera_img_packet_out->data["shape"][1], (int) camera_img_packet_out->data["shape"][0], image::FMT_BGR888, data_in);
 
         image::Image *rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
