@@ -14,6 +14,8 @@
 #include <iostream>
 #include <cstdint>
 #include <memory>
+#include "maix_util.hpp"
+#include "maix_image.hpp"
 
 using json = nlohmann::json;
 
@@ -216,6 +218,32 @@ public:
         return result;
     }
 
+    // Out
+    static Packet* maix_image_to_packet(image::Image* img) {
+        image::Image* img_bgr888 = nullptr;
+        if (img->format() != image::FMT_BGR888) {
+            img_bgr888 = img->to_format(image::FMT_BGR888);
+        } else {
+            img_bgr888 = img->copy();
+        }
+        Bytes* data_out = img_bgr888->to_bytes(true);
+        delete img_bgr888;
+        uint8_t* data_out_raw = data_out->begin();
+        json metadata = {
+            {"shape", std::vector<int>{img_bgr888->height(), img_bgr888->width(), 3}},
+            {"dtype", "uint8"},
+            {"emit_time_ns", 0}
+        };
+        Packet* camera_img_packet_out = new Packet((json) metadata, (uint64_t) metadata["emit_time_ns"].get<uint64_t>(), 
+                                                   (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
+        
+        delete data_out;
+        delete data_out_raw;
+        delete camera_img_packet_out;
+
+        return camera_img_packet_out;
+    }
+
     // Десериализация изображения (метаданные + raw данные)
     // Десериализация изображения: метаданные + raw данные
     static Packet* deserialize_image(const char* data, size_t size) {
@@ -263,6 +291,16 @@ public:
         // std::cout << "Returning result" << std::endl;
 
         return res_packet;
+    }
+
+    static image::Image* packet_to_maix_image(const Packet* packet) {
+
+        Bytes* data_in = new Bytes(packet->frame->data_ptr, packet->frame->size);
+        maix::image::Image *img_transfered = image::from_bytes((int) packet->data["shape"][1], (int) packet->data["shape"][0], image::FMT_BGR888, data_in);
+
+        delete data_in;
+
+        return img_transfered;
     }
 
     static Packet* deserialize(const char* data, size_t size) {

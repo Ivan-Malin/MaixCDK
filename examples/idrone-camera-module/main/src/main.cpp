@@ -59,20 +59,7 @@ int _main(int argc, char* argv[])
     
 
     uint64_t last_ms = time::ticks_ms();
-    // int cnt = 0;
     while(!app::need_exit()) {
-        // cnt ++;
-        // image::Color color = image::COLOR_BLACK;
-        // if (cnt == 1) {
-        //     color = image::COLOR_BLACK;
-        // } else if (cnt == 2) {
-        //     color = image::COLOR_RED;
-        // } else if (cnt == 3) {
-        //     color = image::COLOR_GREEN;
-        // } else {
-        //     color = image::COLOR_BLUE;
-        //     cnt = 0;
-        // }
         
         // Draw image over small region of output image
         maix::image::Image *img = nullptr;
@@ -84,30 +71,14 @@ int _main(int argc, char* argv[])
         }
 
         // Out
-        image::Image* img_bgr888 = nullptr;
-        if (img->format() != image::FMT_BGR888) {
-            img_bgr888 = img->to_format(image::FMT_BGR888);
-        } else {
-            img_bgr888 = img->copy();
-        }
-        Bytes* data_out = img_bgr888->to_bytes(true);
-        delete img_bgr888;
-        uint8_t* data_out_raw = data_out->begin();
-        json metadata = {
-            {"shape", std::vector<int>{img_bgr888->height(), img_bgr888->width(), 3}},
-            {"dtype", "uint8"},
-            {"emit_time_ns", 0}
-        };
-        Packet* camera_img_packet_out = new Packet((json) metadata, (uint64_t) metadata["emit_time_ns"].get<uint64_t>(), 
-                                                   (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
+        Packet* camera_img_packet_out = Packet::maix_image_to_packet(img);
         std::string string_out = Packet::serialize_image(camera_img_packet_out);
-        
-        // In 
+
+        // In
         std::string string_in = string_out;
         Packet* camera_img_packet_in = Packet::deserialize_image(string_in.data(), string_in.size());
-
-        Bytes* data_in = new Bytes(camera_img_packet_in->frame->data_ptr, camera_img_packet_in->frame->size);
-        maix::image::Image *img_transfered = image::from_bytes((int) camera_img_packet_in->data["shape"][1], (int) camera_img_packet_in->data["shape"][0], image::FMT_BGR888, data_in);
+        maix::image::Image *img_transfered = Packet::packet_to_maix_image(camera_img_packet_in);
+        
 
         image::Image *rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
@@ -116,9 +87,7 @@ int _main(int argc, char* argv[])
 
         delete camera_img_packet_in;
         delete camera_img_packet_out;
-        delete data_out;
         delete img_transfered;
-        delete data_in;
         delete img;
         uint64_t curr_ms = time::ticks_ms();
         log::info("loop use %lld ms\r\n", curr_ms - last_ms);
