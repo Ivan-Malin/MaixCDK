@@ -220,31 +220,23 @@ public:
 
     // Out
     static Packet* maix_image_to_packet(maix::image::Image* img) {
-        std::cout << "B1" << std::endl;
         maix::image::Image* img_bgr888 = nullptr;
         if (img->format() != maix::image::FMT_BGR888) {
             img_bgr888 = img->to_format(maix::image::FMT_BGR888);
         } else {
             img_bgr888 = img->copy();
         }
-        std::cout << "B2" << std::endl;
         maix::Bytes* data_out = img_bgr888->to_bytes(true);
-        std::cout << "B3" << std::endl;
         delete img_bgr888;
-        std::cout << "B4" << std::endl;
         uint8_t* data_out_raw = data_out->begin();
-        std::cout << "B5" << std::endl;
         json metadata = {
             {"shape", std::vector<int>{img_bgr888->height(), img_bgr888->width(), 3}},
             {"dtype", "uint8"},
             {"emit_time_ns", 0}
         };
-        std::cout << "B6" << std::endl;
         Packet* camera_img_packet_out = new Packet((json) metadata, (uint64_t) metadata["emit_time_ns"].get<uint64_t>(), 
                                                    (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
-        std::cout << "B7" << std::endl;
         delete data_out;
-        std::cout << "B8" << std::endl;
 
         return camera_img_packet_out;
     }
