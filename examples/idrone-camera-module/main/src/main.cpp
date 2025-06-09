@@ -100,19 +100,21 @@ int _main(int argc, char* argv[])
         };
         Packet* camera_img_packet_out = new Packet((json) metadata, (uint64_t) metadata["emit_time_ns"].get<uint64_t>(), 
                                                    (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
+        std::string string_out = Packet::serialize_image(camera_img_packet_out);
         
         // In
-        uint32_t len = camera_img_packet_out->frame->size; // image::fmt_size[image::FMT_BGR888]
-        uint8_t* data_in_raw = camera_img_packet_out->frame->data_ptr;
+        std::string string_in = string_out;
+        Packet* camera_img_packet_in = Packet::deserialize_image(string_in.data(), string_in.size());
 
-        Bytes* data_in = new Bytes(data_in_raw, data_out->size());
-        maix::image::Image *img_transfered = image::from_bytes((int) camera_img_packet_out->data["shape"][1], (int) camera_img_packet_out->data["shape"][0], image::FMT_BGR888, data_in);
+        Bytes* data_in = new Bytes(camera_img_packet_in->frame->data, camera_img_packet_in->frame->size);
+        maix::image::Image *img_transfered = image::from_bytes((int) camera_img_packet_in->data["shape"][1], (int) camera_img_packet_in->data["shape"][0], image::FMT_BGR888, data_in);
 
         image::Image *rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
         region->update_canvas();
         delete rgn_img;
 
+        delete camera_img_packet_in;
         delete camera_img_packet_out;
         delete data_out;
         delete img_transfered;
