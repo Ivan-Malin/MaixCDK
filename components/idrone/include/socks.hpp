@@ -180,7 +180,7 @@ public:
     }
 
     // Сериализация изображения (метаданные + raw данные)
-    static std::string Packet::serialize_image(const Packet* packet) {
+    static std::string serialize_image(const Packet* packet) {
         // Проверяем структуру данных
         if (!packet->data.contains("shape") || !packet->data.contains("dtype")) {
             throw std::runtime_error("Invalid image data structure");
@@ -370,7 +370,7 @@ public:
     //     pub_data_packets_.clear(); 
     // }
 
-    void ConfigurableSocketModule::clear_all_sub_in() {
+    void clear_all_sub_in() {
         // std::cout << "Clearing packets sub in" << std::endl;
         // for (const auto& item : sub_data_packets_) {
         //     // if (item.second->frame->data_ptr) {
