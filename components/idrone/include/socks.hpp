@@ -16,6 +16,9 @@
 #include <memory>
 #include "maix_basic.hpp"
 #include "maix_image.hpp"
+#include <ifaddrs.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 using json = nlohmann::json;
 
@@ -33,6 +36,28 @@ inline uint32_t ntohll_be(const uint8_t* bytes) {
            (static_cast<uint32_t>(bytes[1]) << 16) |
            (static_cast<uint32_t>(bytes[2]) << 8)  |
            static_cast<uint32_t>(bytes[3]);
+}
+
+std::string get_local_ip() {
+    // Наивный подход к поиску IP - берёт первый из доступных. Работает только при отсутствии других интерфейсов
+    std::string ip = "127.0.0.1";
+    struct ifaddrs *ifaddr, *ifa;
+    if (getifaddrs(&ifaddr) == -1) return ip;
+
+    for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr && ifa->ifa_addr->sa_family == AF_INET) {
+            void* tmpAddrPtr = &((struct sockaddr_in*)ifa->ifa_addr)->sin_addr;
+            char addressBuffer[INET_ADDRSTRLEN];
+            inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
+            std::string ip_str = addressBuffer;
+            if (ip_str != "127.0.0.1") {
+                ip = ip_str;
+                break;
+            }
+        }
+    }
+    freeifaddrs(ifaddr);
+    return ip;
 }
 
 class FrameBuffer {
@@ -343,7 +368,7 @@ class ConfigurableSocketModule {
 public:
     using CommandHandler = std::function<void(const json&)>;
 
-    explicit ConfigurableSocketModule(const std::string& controller_uri,
+    explicit ConfigurableSocketModule(const std::string& controller_ip,
                                       const std::string& module_name);
 
     virtual ~ConfigurableSocketModule();

@@ -1,0 +1,6 @@
+name: idrone-camera-module
+type: sensor
+sockets:
+  sock_out:
+    output_frame: image
+params: {}

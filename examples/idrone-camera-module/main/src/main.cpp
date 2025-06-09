@@ -16,85 +16,63 @@
 
 using namespace maix;
 
-int _main(int argc, char* argv[])
-{
-    int cam_w = -1;
-    int cam_h = -1;
-    image::Format cam_fmt = image::Format::FMT_YVU420SP;
-    int cam_fps = -1;
-    int cam_buffer_num = 3;
-    if (argc > 1) {
-        if (!strcmp(argv[1], "-h")) {
-            log::info("./rtsp_demo <width> <height> <format> <fps> <buff_num>");
-            log::info("example: ./rtsp_demo 640 480");
-            exit(0);
-        } else {
-            cam_w = atoi(argv[1]);
-        }
+class CameraModule : public ConfigurableSocketModule {
+public:
+    CameraModule(const std::string& controller_ip, const std::string& module_name) :
+        ConfigurableSocketModule(controller_ip, module_name) {
+        // Никакой дополнительной инициализации не требуется
+        int cam_w = -1;
+        int cam_h = -1;
+        image::Format cam_fmt = image::Format::FMT_YVU420SP;
+        int cam_fps = -1;
+        int cam_buffer_num = 3;
+        cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
+        // cam_high_res = cam.add_channel(640, 480);
+        cam_low_res = cam.add_channel(320, 240);
     }
-    if (argc > 2) cam_h = atoi(argv[2]);
-    if (argc > 3) cam_fmt = (image::Format)atoi(argv[3]);
-    if (argc > 4) cam_fps = atoi(argv[4]);
-    if (argc > 5) cam_buffer_num = atoi(argv[5]);
-    log::info("Camera width:%d height:%d format:%s fps:%d buffer_num:%d", cam_w, cam_h, image::fmt_names[cam_fmt].c_str(), cam_fps, cam_buffer_num);
 
-    camera::Camera cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
-    auto audio_recorder = audio::Recorder();
-    rtsp::Rtsp rtsp = rtsp::Rtsp();
-    rtsp.bind_camera(&cam);
-    rtsp.bind_audio_recorder(&audio_recorder);
+protected:
+    camera::Camera cam;
     
-    // Show debug info
-    log::info("url:%s", rtsp.get_url().c_str());
-    std::vector<std::string> url = rtsp.get_urls();
-    for (size_t i = 0; i < url.size(); i ++) {
-        log::info("url[%d]:%s", i, url[i].c_str());
-    }
-    err::check_raise(rtsp.start());
-    
+    // camera::Camera *cam_high_res;
+    camera::Camera *cam_low_res;
 
-    // Part of overlapping image
-    camera::Camera *cam2 = cam.add_channel(320, 240);
-    rtsp::Region *region = rtsp.add_region(0, 0, 320, 240);
-    
-    image::Image *rgn_img;
-    uint64_t last_ms = time::ticks_ms();
-    while(!app::need_exit()) {
-        
-        // Draw image over small region of output image
-        maix::image::Image *img = nullptr;
+    void processor_run() override {
+        // Проверяем, есть ли новое изображение
+        maix::image::Image *img_low_res = nullptr;
         try {
-            img = cam2->read();
+            // img_high_res = cam_high_res->read();
+            img_low_res  = cam_low_res ->read();
         } catch (std::exception &e) {
             time::sleep_ms(10);
             continue;
         }
 
         // Out
-        Packet* camera_img_packet_out = Packet::maix_image_to_packet(img);
-        std::string string_out = Packet::serialize_image(camera_img_packet_out);
+        Packet* low_res_packet = Packet::maix_image_to_packet(img_low_res);
 
-        // In
-        std::string string_in = string_out;
-        Packet* camera_img_packet_in = Packet::deserialize_image(string_in.data(), string_in.size());
-        maix::image::Image *img_transfered = Packet::packet_to_maix_image(camera_img_packet_in);
-        
-
-        rgn_img = region->get_canvas();
-        rgn_img->draw_image(0, 0, *img_transfered);
-        region->update_canvas();
-        delete rgn_img;
-
-        delete camera_img_packet_in;
-        delete camera_img_packet_out;
-        delete img_transfered;
-        delete img;
-        uint64_t curr_ms = time::ticks_ms();
-        log::info("loop use %lld ms\r\n", curr_ms - last_ms);
-        last_ms = curr_ms;
+        // Отправляем результат
+        set_pub_data_packet("output_frame", low_res_packet);
+        delete low_res_packet;
+        delete img_low_res;
     }
+};
 
-    rtsp.stop();
+int _main(int argc, char* argv[])
+{
+    if (argc < 3) {
+        std::cerr << "Usage: " << argv[0] << " <controller_ip> <module_name>" << std::endl;
+        return 1;
+    }
+    
+    std::string controller_ip = argv[1];
+    std::string module_name = argv[2];
+    
+    CameraModule cameraModule(controller_ip, module_name);
+    cameraModule.start();
+
+    std::cin.get(); // keep running
+    transfer.stop();
 
     return 0;
 }
