@@ -45,6 +45,21 @@ if(PLATFORM_LINUX)
 elseif(PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2)
     list(APPEND ADD_REQUIREMENTS tinyalsa)
 endif()
+
+
+set(zmq_lib_dir "lib")
+set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so)
+list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
+set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+
+set(msgpack_lib_dir "lib")
+set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so
+                                   ${msgpack_lib_dir}/libatomic.so.1
+                                   ${msgpack_lib_dir}/libatomic.so.1.2.0
+)
+list(APPEND ADD_DYNAMIC_LIB ${msgpack_lib_dynamic_lib_file})
+set_property(SOURCE ${msgpack_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+
 ###############################################
 
 ###### Add link search path for requirements/libs ######
