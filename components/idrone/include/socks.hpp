@@ -239,7 +239,6 @@ public:
         
         delete data_out;
         delete data_out_raw;
-        delete camera_img_packet_out;
 
         return camera_img_packet_out;
     }
