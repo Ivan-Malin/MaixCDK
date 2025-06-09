@@ -93,7 +93,11 @@ int _main(int argc, char* argv[])
         Bytes* data_out = img_bgr888->to_bytes(true);
         delete img_bgr888;
         uint8_t* data_out_raw = data_out->begin();
-        json metadata = {{"shape", [img_bgr888->height(), img_bgr888->width(), 3]}, {"dtype": "uint8"}, {"emit_time_ns",0}};
+        json metadata = {
+            {"shape", std::vector<int>{img_bgr888->height(), img_bgr888->width(), 3}},
+            {"dtype", "uint8"},
+            {"emit_time_ns", 0}
+        };
         Packet* camera_img_packet_out = new Packet((json) metadata, (uint64_t) metadata["emit_time_ns"].get<uint64_t>(), 
                                                    (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
         
