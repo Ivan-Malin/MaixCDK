@@ -57,7 +57,7 @@ int _main(int argc, char* argv[])
     camera::Camera *cam2 = cam.add_channel(320, 240);
     rtsp::Region *region = rtsp.add_region(0, 0, 320, 240);
     
-
+    image::Image *rgn_img;
     uint64_t last_ms = time::ticks_ms();
     while(!app::need_exit()) {
         
@@ -80,7 +80,7 @@ int _main(int argc, char* argv[])
         maix::image::Image *img_transfered = Packet::packet_to_maix_image(camera_img_packet_in);
         
 
-        image::Image *rgn_img = region->get_canvas();
+        rgn_img = region->get_canvas();
         rgn_img->draw_image(0, 0, *img_transfered);
         region->update_canvas();
         delete rgn_img;
