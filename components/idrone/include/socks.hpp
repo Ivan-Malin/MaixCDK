@@ -14,7 +14,7 @@
 #include <iostream>
 #include <cstdint>
 #include <memory>
-#include "maix_util.hpp"
+#include "maix_basic.hpp"
 #include "maix_image.hpp"
 
 using json = nlohmann::json;
@@ -219,10 +219,10 @@ public:
     }
 
     // Out
-    static Packet* maix_image_to_packet(image::Image* img) {
-        image::Image* img_bgr888 = nullptr;
-        if (img->format() != image::FMT_BGR888) {
-            img_bgr888 = img->to_format(image::FMT_BGR888);
+    static Packet* maix_image_to_packet(maix::image::Image* img) {
+        maix::image::Image* img_bgr888 = nullptr;
+        if (img->format() != maix::image::FMT_BGR888) {
+            img_bgr888 = img->to_format(maix::image::FMT_BGR888);
         } else {
             img_bgr888 = img->copy();
         }
@@ -293,10 +293,10 @@ public:
         return res_packet;
     }
 
-    static image::Image* packet_to_maix_image(const Packet* packet) {
+    static maix::image::Image* packet_to_maix_image(const Packet* packet) {
 
         Bytes* data_in = new Bytes(packet->frame->data_ptr, packet->frame->size);
-        maix::image::Image *img_transfered = image::from_bytes((int) packet->data["shape"][1], (int) packet->data["shape"][0], image::FMT_BGR888, data_in);
+        maix::maix::image::Image *img_transfered = maix::image::from_bytes((int) packet->data["shape"][1], (int) packet->data["shape"][0], maix::image::FMT_BGR888, data_in);
 
         delete data_in;
 
