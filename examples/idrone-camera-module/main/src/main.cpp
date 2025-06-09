@@ -102,7 +102,7 @@ int _main(int argc, char* argv[])
                                                    (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);
         std::string string_out = Packet::serialize_image(camera_img_packet_out);
         
-        // In
+        // In 
         std::string string_in = string_out;
         Packet* camera_img_packet_in = Packet::deserialize_image(string_in.data(), string_in.size());
 
