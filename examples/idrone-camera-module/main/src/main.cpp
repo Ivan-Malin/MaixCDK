@@ -71,17 +71,25 @@ int _main(int argc, char* argv[])
         }
 
         // Out
+        std::cout << "A1" << std::endl;
         Packet* camera_img_packet_out = Packet::maix_image_to_packet(img);
+        std::cout << "A2" << std::endl;
         std::string string_out = Packet::serialize_image(camera_img_packet_out);
+        std::cout << "A3" << std::endl;
 
         // In
         std::string string_in = string_out;
+        std::cout << "A4" << std::endl;
         Packet* camera_img_packet_in = Packet::deserialize_image(string_in.data(), string_in.size());
+        std::cout << "A5" << std::endl;
         maix::image::Image *img_transfered = Packet::packet_to_maix_image(camera_img_packet_in);
+        std::cout << "A6" << std::endl;
         
 
         image::Image *rgn_img = region->get_canvas();
+        std::cout << "A7" << std::endl;
         rgn_img->draw_image(0, 0, *img_transfered);
+        std::cout << "A8" << std::endl;
         region->update_canvas();
         delete rgn_img;
 
