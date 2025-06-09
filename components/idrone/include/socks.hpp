@@ -245,8 +245,6 @@ public:
         std::cout << "B7" << std::endl;
         delete data_out;
         std::cout << "B8" << std::endl;
-        delete data_out_raw;
-        std::cout << "B9" << std::endl;
 
         return camera_img_packet_out;
     }
