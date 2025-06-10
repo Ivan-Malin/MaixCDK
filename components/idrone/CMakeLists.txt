@@ -48,9 +48,7 @@ endif()
 
 
 set(zmq_lib_dir "lib")
-set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so
-                               ${zmq_lib_dir}/libbsd.so
-                               ${zmq_lib_dir}/libbsd.so.0)
+set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so)
 list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
 # find_package(ZeroMQ REQUIRED)
 set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
