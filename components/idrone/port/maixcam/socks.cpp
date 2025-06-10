@@ -48,7 +48,7 @@ inline nlohmann::json yaml2json(const YAML::Node &root) {
   return j;
 }
 
-ConfigurableSocketModule::ConfigurableSocketModule(const std::string& controller_uri,
+ConfigurableSocketModule::ConfigurableSocketModule(const std::string& controller_ip,
                                                    const std::string& module_name) :
     name_(module_name),
     context_(1),
@@ -76,14 +76,18 @@ ConfigurableSocketModule::ConfigurableSocketModule(const std::string& controller
 
     std::cout << "C++ AT LEAST CONSTRUCTING, HELL YEAH" << std::endl;
 
-    status_socket_.connect("tcp://localhost:9001");
+    status_socket_.connect("tcp://" + controller_ip + ":9001");
     std::cout << "C++ AT LEAST CONSTRUCTING 1, HELL YEAH" << std::endl;
-    command_socket_.connect("tcp://localhost:9000");
+    command_socket_.connect("tcp://" + controller_ip + ":9000");
     std::cout << "C++ AT LEAST CONSTRUCTING 2, HELL YEAH" << std::endl;
     command_socket_.set(zmq::sockopt::subscribe, "");
     std::cout << "C++ AT LEAST CONSTRUCTING 2, HELL YEAH" << std::endl;
 
     std::cout << "C++ AT LEAST CONNECTING, HELL YEAH" << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
+    std::cout << "SENDING MTHF" << std::endl;
 
     send_status_to_controller("ready");
 }
@@ -155,8 +159,10 @@ void ConfigurableSocketModule::configure_sockets(const json& socket_config) {
 
 void ConfigurableSocketModule::send_status_to_controller(const std::string& status) {
     json msg = {
+        {"type", "status"},
         {"module", name_},
         {"status", status},
+        {"ip", get_local_ip_socks()}
         {"timestamp", std::chrono::duration_cast<std::chrono::nanoseconds>(
              std::chrono::system_clock::now().time_since_epoch()).count()}
     };
