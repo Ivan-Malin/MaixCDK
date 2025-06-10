@@ -34,7 +34,7 @@ endif()
 ###### Add required/dependent components ######
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
-find_package(cppzmq)
+# find_package(cppzmq)
 list(APPEND ADD_REQUIREMENTS zmq msgpackc yaml json vision cppzmq)
 
 # list(APPEND ADD_INCLUDE )
@@ -47,11 +47,13 @@ elseif(PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2)
 endif()
 
 
-# set(zmq_lib_dir "lib")
-# set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so)
-# list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
-# # find_package(ZeroMQ REQUIRED)
-# set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+set(zmq_lib_dir "lib")
+set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so
+                               ${zmq_lib_dir}/libbsd.so.0)
+list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
+# find_package(ZeroMQ REQUIRED)
+list(APPEND ADD_INCLUDE ${zmq_lib_dir}/include)
+set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
 
 # Add lib search path to link flags
 # foreach(abs_dir ${g_link_search_path})
