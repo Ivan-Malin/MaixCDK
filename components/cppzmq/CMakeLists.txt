@@ -3,6 +3,8 @@ list(APPEND ADD_REQUIREMENTS ini)
 list(APPEND ADD_INCLUDE "include")
 
 list(APPEND ADD_DYNAMIC_LIB "lib/libzmq.so")
+list(APPEND ADD_DYNAMIC_LIB "lib/libbsd.so.0")
+list(APPEND ADD_DYNAMIC_LIB "lib")
 
 # if(PLATFORM_MAIXCAM)
 #     message(STATUS "PLATFORM_MAIXCAM")
