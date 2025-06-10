@@ -162,7 +162,7 @@ void ConfigurableSocketModule::send_status_to_controller(const std::string& stat
         {"type", "status"},
         {"module", name_},
         {"status", status},
-        {"ip", get_local_ip_socks()}
+        {"ip", get_local_ip_socks()},
         {"timestamp", std::chrono::duration_cast<std::chrono::nanoseconds>(
              std::chrono::system_clock::now().time_since_epoch()).count()}
     };
