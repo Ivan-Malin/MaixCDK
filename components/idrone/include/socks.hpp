@@ -60,6 +60,12 @@ inline std::string get_local_ip_socks() {
     return ip;
 }
 
+inline int64_t get_uptime_nanoseconds() {
+    auto now = std::chrono::steady_clock::now();
+    auto duration = now.time_since_epoch();
+    return std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
+}
+
 class FrameBuffer {
 public:
     uint8_t* data_ptr;
@@ -244,7 +250,7 @@ public:
     }
 
     // Out
-    static Packet* maix_image_to_packet(maix::image::Image* img) {
+    static Packet* maix_image_to_packet(maix::image::Image* img, uint64_t emit_time_ns) {
         maix::image::Image* img_bgr888 = nullptr;
         if (img->format() != maix::image::FMT_BGR888) {
             img_bgr888 = img->to_format(maix::image::FMT_BGR888);
@@ -257,7 +263,7 @@ public:
         json metadata = {
             {"shape", std::vector<int>{img_bgr888->height(), img_bgr888->width(), 3}},
             {"dtype", "uint8"},
-            {"emit_time_ns", 0}
+            {"emit_time_ns", emit_time_ns}
         };
         Packet* camera_img_packet_out = new Packet((json) metadata, (uint64_t) metadata["emit_time_ns"].get<uint64_t>(), 
                                                    (uint8_t*) data_out_raw, (size_t) data_out->size(), (bool) true);

@@ -49,7 +49,7 @@ protected:
         }
 
         // Out
-        Packet* low_res_packet = Packet::maix_image_to_packet(img_low_res);
+        Packet* low_res_packet = Packet::maix_image_to_packet(img_low_res, get_uptime_nanoseconds());
 
         // Отправляем результат
         set_pub_data_packet("output_frame", low_res_packet);
