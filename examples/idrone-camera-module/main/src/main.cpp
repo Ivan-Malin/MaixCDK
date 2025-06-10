@@ -42,10 +42,10 @@ protected:
         maix::image::Image *img_low_res = nullptr;
         try {
             // img_high_res = cam_high_res->read();
-            img_low_res  = cam_low_res ->read();
+            img_low_res  = cam_low_res->read();
         } catch (std::exception &e) {
             time::sleep_ms(10);
-            continue;
+            return;
         }
 
         // Out
@@ -72,7 +72,7 @@ int _main(int argc, char* argv[])
     cameraModule.start();
 
     std::cin.get(); // keep running
-    transfer.stop();
+    cameraModule.stop();
 
     return 0;
 }
