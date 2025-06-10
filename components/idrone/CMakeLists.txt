@@ -50,7 +50,7 @@ endif()
 set(zmq_lib_dir "lib")
 set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so)
 list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
-list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dir})
+link_directories(${zmq_lib_dir})
 set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
 
 set(msgpack_lib_dir "lib")
