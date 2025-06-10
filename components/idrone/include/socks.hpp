@@ -38,7 +38,7 @@ inline uint32_t ntohll_be(const uint8_t* bytes) {
            static_cast<uint32_t>(bytes[3]);
 }
 
-std::string get_local_ip() {
+std::string get_local_ip_socks() {
     // Наивный подход к поиску IP - берёт первый из доступных. Работает только при отсутствии других интерфейсов
     std::string ip = "127.0.0.1";
     struct ifaddrs *ifaddr, *ifa;
