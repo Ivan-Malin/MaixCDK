@@ -118,3 +118,4 @@ list(APPEND ADD_DYNAMIC_LIB "lib/libzmq.so")
 # register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
 # register_component()
 
+register_component()
