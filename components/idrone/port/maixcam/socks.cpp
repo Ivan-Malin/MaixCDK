@@ -310,6 +310,7 @@ void ConfigurableSocketModule::output_sending() {
 
                         if (data_type == "image") {
                             serialized = Packet::serialize_image(packet.get());
+                            std::cout << "Serializing image" << std::endl;
                         } else {
                             serialized = Packet::serialize(packet.get());
                         }
@@ -320,6 +321,7 @@ void ConfigurableSocketModule::output_sending() {
 
                         // Отправка пакета
                         sock->send(zmq::buffer(serialized));
+                        std::cout << "Sending to: " << name << std::endl;
                         last_emit_times_[name] = current_emit_time; // Обновление времени
                         // std::cout << "Before erasing after set" << std::endl;
                         // pub_data_packets_.erase(name);
