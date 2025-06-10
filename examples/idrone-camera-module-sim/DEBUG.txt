@@ -1,0 +1,121 @@
+-- PLATFORM: maixcam
+-- SDK_PATH: /home/user/MaixCDK
+-- PROJECT_PATH: /home/user/MaixCDK/examples/rtsp_demo
+-- PROJECT_BINARY_DIR: /home/user/MaixCDK/examples/rtsp_demo/build
+-- PROJECT_DIST_DIR: /home/user/MaixCDK/examples/rtsp_demo/dist
+-- DL_PKGS_PATH: /home/user/MaixCDK/dl/pkgs
+-- DL_EXTRACTED_PATH: /home/user/MaixCDK/dl/extracted
+-- CMAKE_BUILD_TYPE: MinSizeRel (Release)
+-- TOOLCHAIN_ID: musl_t-head
+-- Component [basic] found: /home/user/MaixCDK/components/basic
+--           [basic] have Kconfig
+-- Component [comm] found: /home/user/MaixCDK/components/comm
+--           [comm] have Kconfig
+-- Component [maixcam_lib] found: /home/user/MaixCDK/components/maixcam_lib
+--           [maixcam_lib] have Kconfig
+-- Component [network] found: /home/user/MaixCDK/components/network
+--           [network] have Kconfig
+-- Component [nn] found: /home/user/MaixCDK/components/nn
+--           [nn] have Kconfig
+-- Component [peripheral] found: /home/user/MaixCDK/components/peripheral
+--           [peripheral] have Kconfig
+-- Component [vision] found: /home/user/MaixCDK/components/vision
+--           [vision] have Kconfig
+-- Component [vision_extra] found: /home/user/MaixCDK/components/vision_extra
+--           [vision_extra] have Kconfig
+-- Component [voice] found: /home/user/MaixCDK/components/voice
+--           [voice] have Kconfig
+-- Component [FFmpeg] found: /home/user/MaixCDK/components/3rd_party/FFmpeg
+--           [FFmpeg] have Kconfig
+-- Component [RtspServer] found: /home/user/MaixCDK/components/3rd_party/RtspServer
+--           [RtspServer] have Kconfig
+-- Component [alsa_lib] found: /home/user/MaixCDK/components/3rd_party/alsa_lib
+-- Component [asio] found: /home/user/MaixCDK/components/3rd_party/asio
+--           [asio] have Kconfig
+-- Component [ax620e_msp] found: /home/user/MaixCDK/components/3rd_party/ax620e_msp
+-- Component [brotli] found: /home/user/MaixCDK/components/3rd_party/brotli
+--           [brotli] have Kconfig
+-- Component [clipper2] found: /home/user/MaixCDK/components/3rd_party/clipper2
+-- Component [cpp-httplib] found: /home/user/MaixCDK/components/3rd_party/cpp-httplib
+--           [cpp-httplib] have Kconfig
+-- Component [cvi_tpu] found: /home/user/MaixCDK/components/3rd_party/cvi_tpu
+--           [cvi_tpu] have Kconfig
+-- Component [eigen] found: /home/user/MaixCDK/components/3rd_party/eigen
+--           [eigen] have Kconfig
+-- Component [freetype] found: /home/user/MaixCDK/components/3rd_party/freetype
+--           [freetype] have Kconfig
+-- Component [harfbuzz] found: /home/user/MaixCDK/components/3rd_party/harfbuzz
+--           [harfbuzz] have Kconfig
+-- Component [http_request] found: /home/user/MaixCDK/components/3rd_party/http_request
+--           [http_request] have Kconfig
+-- Component [ini] found: /home/user/MaixCDK/components/3rd_party/ini
+--           [ini] have Kconfig
+-- Component [json] found: /home/user/MaixCDK/components/3rd_party/json
+-- Component [kaldi-native-fbank] found: /home/user/MaixCDK/components/3rd_party/kaldi-native-fbank
+--           [kaldi-native-fbank] have Kconfig
+-- Component [libdatachannel] found: /home/user/MaixCDK/components/3rd_party/libdatachannel
+-- Component [libjuice] found: /home/user/MaixCDK/components/3rd_party/libjuice
+-- Component [libmodbus] found: /home/user/MaixCDK/components/3rd_party/libmodbus
+--           [libmodbus] have Kconfig
+-- Component [libsrtp] found: /home/user/MaixCDK/components/3rd_party/libsrtp
+-- Component [lvgl] found: /home/user/MaixCDK/components/3rd_party/lvgl
+--           [lvgl] have Kconfig
+-- Component [media_server] found: /home/user/MaixCDK/components/3rd_party/media_server
+--           [media_server] have Kconfig
+-- Component [ntp_client] found: /home/user/MaixCDK/components/3rd_party/ntp_client
+--           [ntp_client] have Kconfig
+-- Component [omv] found: /home/user/MaixCDK/components/3rd_party/omv
+--           [omv] have Kconfig
+-- Component [onnxruntime] found: /home/user/MaixCDK/components/3rd_party/onnxruntime
+--           [onnxruntime] have Kconfig
+-- Component [opencv] found: /home/user/MaixCDK/components/3rd_party/opencv
+--           [opencv] have Kconfig
+-- Component [opencv_freetype] found: /home/user/MaixCDK/components/3rd_party/opencv_freetype
+--           [opencv_freetype] have Kconfig
+-- Component [openssl] found: /home/user/MaixCDK/components/3rd_party/openssl
+--           [openssl] have Kconfig
+-- Component [plog] found: /home/user/MaixCDK/components/3rd_party/plog
+-- Component [pybind11] found: /home/user/MaixCDK/components/3rd_party/pybind11
+--           [pybind11] have Kconfig
+-- Component [python3] found: /home/user/MaixCDK/components/3rd_party/python3
+--           [python3] have Kconfig
+-- Component [qrcode] found: /home/user/MaixCDK/components/3rd_party/qrcode
+--           [qrcode] have Kconfig
+-- Component [quirc] found: /home/user/MaixCDK/components/3rd_party/quirc
+--           [quirc] have Kconfig
+-- Component [rlottie] found: /home/user/MaixCDK/components/3rd_party/rlottie
+--           [rlottie] have Kconfig
+-- Component [sdl] found: /home/user/MaixCDK/components/3rd_party/sdl
+--           [sdl] have Kconfig
+-- Component [sophgo-middleware] found: /home/user/MaixCDK/components/3rd_party/sophgo-middleware
+--           [sophgo-middleware] have Kconfig
+-- Component [sunxi_mpp] found: /home/user/MaixCDK/components/3rd_party/sunxi_mpp
+--           [sunxi_mpp] have Kconfig
+-- Component [tinyalsa] found: /home/user/MaixCDK/components/3rd_party/tinyalsa
+--           [tinyalsa] have Kconfig
+-- Component [usrsctp] found: /home/user/MaixCDK/components/3rd_party/usrsctp
+-- Component [websocket] found: /home/user/MaixCDK/components/3rd_party/websocket
+--           [websocket] have Kconfig
+-- Component [yaml] found: /home/user/MaixCDK/components/3rd_party/yaml
+--           [yaml] have Kconfig
+-- Component [zbar] found: /home/user/MaixCDK/components/3rd_party/zbar
+--           [zbar] have Kconfig
+-- Component [zip] found: /home/user/MaixCDK/components/3rd_party/zip
+--           [zip] have Kconfig
+-- Component [ext_dev] found: /home/user/MaixCDK/components/ext_devs/ext_dev
+-- Component [ext_dev_mlx90640] found: /home/user/MaixCDK/components/ext_devs/ext_dev_mlx90640
+-- Component [ext_dev_tof100] found: /home/user/MaixCDK/components/ext_devs/ext_dev_tof100
+-- Component [main] found: /home/user/MaixCDK/examples/rtsp_demo/main
+--           [main] have Kconfig
+-- python command: python3, version: Python 3.10.12
+
+-- TOOLCHAIN_PATH:/home/user/MaixCDK/dl/extracted/toolchains/maixcam/host-tools/gcc/riscv64-linux-musl-x86_64/bin
+-- No components priority config file
+-- [register component: basic ], path:/home/user/MaixCDK/components/basic
+-- Ignore component comm
+-- PLATFORM_MAIXCAM
+-- [register component: maixcam_lib ], path:/home/user/MaixCDK/components/maixcam_lib
+-- Ignore component network
+-- Ignore component nn
+-- [register component: peripheral ], path:/home/user/MaixCDK/components/peripheral
+-- [register component: vision ], path:/home/user/MaixCDK/components/vision
