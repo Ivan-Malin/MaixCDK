@@ -4,6 +4,7 @@ list(APPEND ADD_INCLUDE "include")
 
 list(APPEND ADD_DYNAMIC_LIB "lib/libzmq.so")
 list(APPEND ADD_DYNAMIC_LIB "lib/libbsd.so.0")
+list(APPEND ADD_DYNAMIC_LIB "lib/libbsd.so.0.11.7")
 list(APPEND ADD_LINK_SEARCH_PATH "lib")
 
 # if(PLATFORM_MAIXCAM)
