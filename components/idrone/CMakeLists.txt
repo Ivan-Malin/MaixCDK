@@ -47,13 +47,22 @@ elseif(PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2)
 endif()
 
 
-# set(zmq_lib_dir "lib")
-# set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so
-#                                ${zmq_lib_dir}/libbsd.so
-#                                ${zmq_lib_dir}/libbsd.so.0)
-# list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
-find_package(ZeroMQ REQUIRED)
+set(zmq_lib_dir "lib")
+set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so
+                               ${zmq_lib_dir}/libbsd.so
+                               ${zmq_lib_dir}/libbsd.so.0)
+list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
+# find_package(ZeroMQ REQUIRED)
 set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+
+# Add lib search path to link flags
+# foreach(abs_dir ${g_link_search_path})
+#     set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${abs_dir} -Wl,-rpath,${abs_dir}")
+#     set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${abs_dir} -Wl,-rpath,${abs_dir}")
+# endforeach()
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
+set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
 
 set(msgpack_lib_dir "lib")
 set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so
