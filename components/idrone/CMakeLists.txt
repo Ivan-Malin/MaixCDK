@@ -1,0 +1,133 @@
+# Config enable component2 or not in Kconfig
+################# Add include #################
+list(APPEND ADD_INCLUDE "include"
+                        "include/base"
+)
+if(PLATFORM_LINUX)
+    list(APPEND ADD_PRIVATE_INCLUDE "port/linux")
+elseif(PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2)
+    list(APPEND ADD_PRIVATE_INCLUDE "port/maixcam")
+endif()
+###############################################
+
+############## Add source files ###############
+# list(APPEND ADD_SRCS  "src/lib2.c"
+#     )
+# FILE(GLOB_RECURSE EXTRA_SRC  "src/*.c")
+# FILE(GLOB EXTRA_SRC  "src/*.c")
+# list(APPEND ADD_SRCS  ${EXTRA_SRC})
+# aux_source_directory(src ADD_SRCS)  # collect all source file in src dir, will set var ADD_SRCS
+append_srcs_dir(ADD_SRCS "src")     # append source file in src dir to var ADD_SRCS
+if(PLATFORM_LINUX)
+    append_srcs_dir(ADD_SRCS "port/linux")
+elseif(PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2)
+    append_srcs_dir(ADD_SRCS "port/maixcam")
+endif()
+# list(REMOVE_ITEM COMPONENT_SRCS "src/test.c")
+# set(ADD_ASM_SRCS "src/asm.S")
+# list(APPEND ADD_SRCS ${ADD_ASM_SRCS})
+# SET_PROPERTY(SOURCE ${ADD_ASM_SRCS} PROPERTY LANGUAGE C) # set .S  ASM file as C language
+# SET_SOURCE_FILES_PROPERTIES(${ADD_ASM_SRCS} PROPERTIES COMPILE_FLAGS "-x assembler-with-cpp -D BBBBB")
+###############################################
+
+
+###### Add required/dependent components ######
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
+# find_package(cppzmq)
+list(APPEND ADD_REQUIREMENTS zmq msgpackc yaml json vision)
+
+# list(APPEND ADD_INCLUDE )
+
+list(APPEND ADD_REQUIREMENTS basic)
+if(PLATFORM_LINUX)
+    list(APPEND ADD_REQUIREMENTS )
+elseif(PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2)
+    list(APPEND ADD_REQUIREMENTS tinyalsa)
+endif()
+
+
+set(zmq_lib_dir "lib")
+set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so
+                               ${zmq_lib_dir}/libbsd.so.0)
+list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
+# find_package(ZeroMQ REQUIRED)
+list(APPEND ADD_INCLUDE ${zmq_lib_dir}/include)
+set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+
+# Add lib search path to link flags
+# foreach(abs_dir ${g_link_search_path})
+#     set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${abs_dir} -Wl,-rpath,${abs_dir}")
+#     set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${abs_dir} -Wl,-rpath,${abs_dir}")
+# endforeach()
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+# set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
+# set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
+# list(APPEND ADD_DYNAMIC_RPATH ${zmq_lib_dynamic_lib_file})
+
+set(msgpack_lib_dir "lib")
+set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so)
+# set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so
+#                                    ${msgpack_lib_dir}/libmsgpackc.so.2
+#                                    ${msgpack_lib_dir}/libmsgpackc.so.2.0.0
+#                                    ${msgpack_lib_dir}/libatomic.so.1
+#                                    ${msgpack_lib_dir}/libatomic.so.1.2.0
+# )
+list(APPEND ADD_DYNAMIC_LIB ${msgpack_lib_dynamic_lib_file})
+set_property(SOURCE ${msgpack_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+
+###############################################
+
+###### Add link search path for requirements/libs ######
+# list(APPEND ADD_LINK_SEARCH_PATH "${CONFIG_TOOLCHAIN_PATH}/lib")
+# list(APPEND ADD_REQUIREMENTS pthread m)  # add system libs, pthread and math lib for example here
+# set (OpenCV_DIR opencv/lib/cmake/opencv4)
+# find_package(OpenCV REQUIRED)
+###############################################
+
+############ Add static libs ##################
+# list(APPEND ADD_STATIC_LIB "lib/libtest.a")
+###############################################
+
+############ Add dynamic libs ##################
+# list(APPEND ADD_DYNAMIC_LIB "lib/arch/v831/libmaix_nn.so"
+#                             "lib/arch/v831/libmaix_cam.so"
+# )
+###############################################
+
+#### Add compile option for this component ####
+#### Just for this component, won't affect other 
+#### modules, including component that depend 
+#### on this component
+# list(APPEND ADD_DEFINITIONS_PRIVATE -DAAAAA=1)
+
+#### Add compile option for this component
+#### Add components that depend on this component
+# list(APPEND ADD_DEFINITIONS -DAAAAA222=1
+#                             -DAAAAA333=1)
+###############################################
+
+############ Add static libs ##################
+#### Update parent's variables like CMAKE_C_LINK_FLAGS
+# set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -Wl,--start-group libmaix/libtest.a -ltest2 -Wl,--end-group" PARENT_SCOPE)
+###############################################
+
+######### Add files need to download #########
+# list(APPEND ADD_FILE_DOWNLOADS "{
+# 'url': 'https://*****/abcde.tar.xz',
+# 'urls': [],  # backup urls, if url failed, will try urls
+# 'sites': [], # download site, user can manually download file and put it into dl_path
+# 'sha256sum': '',
+# 'filename': 'abcde.tar.xz',
+# 'path': 'toolchains/xxxxx',
+# 'check_files': []
+# }"
+# )
+#
+# then extracted file in ${DL_EXTRACTED_PATH}/toolchains/xxxxx,
+# you can directly use then, for example use it in add_custom_command
+##############################################
+
+# register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
+register_component()
+
