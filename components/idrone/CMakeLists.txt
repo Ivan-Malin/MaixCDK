@@ -61,15 +61,15 @@ set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 # set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
 # set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
-list(APPEND ADD_DYNAMIC_RPATH ${zmq_lib_dynamic_lib_file})
+# list(APPEND ADD_DYNAMIC_RPATH ${zmq_lib_dynamic_lib_file})
 
-set(msgpack_lib_dir "lib")
-set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so
-                                   ${msgpack_lib_dir}/libmsgpackc.so.2
-                                   ${msgpack_lib_dir}/libmsgpackc.so.2.0.0
-                                   ${msgpack_lib_dir}/libatomic.so.1
-                                   ${msgpack_lib_dir}/libatomic.so.1.2.0
-)
+# set(msgpack_lib_dir "lib")
+# set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so
+#                                    ${msgpack_lib_dir}/libmsgpackc.so.2
+#                                    ${msgpack_lib_dir}/libmsgpackc.so.2.0.0
+#                                    ${msgpack_lib_dir}/libatomic.so.1
+#                                    ${msgpack_lib_dir}/libatomic.so.1.2.0
+# )
 list(APPEND ADD_DYNAMIC_LIB ${msgpack_lib_dynamic_lib_file})
 set_property(SOURCE ${msgpack_lib_dynamic_lib_file} PROPERTY GENERATED 1)
 
