@@ -59,8 +59,9 @@ set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
 #     set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${abs_dir} -Wl,-rpath,${abs_dir}")
 # endforeach()
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
-set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
+# set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
+# set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${zmq_lib_dir} -Wl,-rpath,${zmq_lib_dir}")
+list(APPEND ADD_DYNAMIC_RPATH ${zmq_lib_dynamic_lib_file})
 
 set(msgpack_lib_dir "lib")
 set(msgpack_lib_dynamic_lib_file   ${msgpack_lib_dir}/libmsgpackc.so

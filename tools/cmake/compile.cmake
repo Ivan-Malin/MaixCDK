@@ -189,6 +189,13 @@ function(register_component)
             target_link_libraries(${component_name} ${include_type} ${lib})
         endforeach()
     endif()
+    # Add dynamic rpath
+    if (ADD_DYNAMIC_RPATH)
+        foreach(abs_dir ${ADD_DYNAMIC_RPATH})
+            set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L${abs_dir} -Wl,-rpath,${abs_dir}")
+            set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L${abs_dir} -Wl,-rpath,${abs_dir}")
+        endforeach()
+    endif()
     # Add dynamic lib
     if(ADD_DYNAMIC_LIB)
         set(dynamic_libs ${g_dynamic_libs})
