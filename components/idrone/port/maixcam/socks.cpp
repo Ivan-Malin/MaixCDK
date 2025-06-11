@@ -146,8 +146,10 @@ void ConfigurableSocketModule::configure_sockets(const json& socket_config) {
         for (auto it = sock_out.begin(); it != sock_out.end(); ++it) {
             const std::string& name = it.key();
             const std::string& remote = it.value().get<std::string>();
-
+            
+            int trueValue = 1;
             zmq::socket_t sock(context_, ZMQ_PUB);
+            zmq_setsockopt(sock, ZMQ_CONFLATE, &trueValue, sizeof(int));
             sock.bind(remote.c_str());
             pub_sockets_[name] = std::move(sock);
         }
