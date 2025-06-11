@@ -13,11 +13,13 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include "socks.hpp"
-#include <opencv2/opencv.hpp>
-#include <opencv2/aruco.hpp>
-#include <json/json.h>  // или #include <nlohmann/json.hpp>, в зависимости от используемой библиотеки JSON
+#include "opencv2/opencv.hpp"
+#include "opencv2/freetype.hpp"
+#include "opencv2/aruco.hpp"
+#include <nlohmann/json.hpp>  // или #include <nlohmann/json.hpp>, в зависимости от используемой библиотеки JSON
 #include <iostream>
 
+using namespace std;
 using namespace maix;
 
 class ArucoModule : public ConfigurableSocketModule {

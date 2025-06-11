@@ -19,6 +19,8 @@
 #include <ifaddrs.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "opencv2/opencv.hpp"
+#include "opencv2/freetype.hpp"
 
 using json = nlohmann::json;
 
