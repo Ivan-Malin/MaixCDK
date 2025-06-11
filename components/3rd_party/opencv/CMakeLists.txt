@@ -99,6 +99,15 @@ set(opencv_MINE_dyn_libs "${opencv_MINE_lib_dir}/lib/libopencv_world.so"
                          "${opencv_MINE_lib_dir}/lib/libtiff.so.6"
                          "${opencv_MINE_lib_dir}/lib/libopenjp2.so.7"
                          "${opencv_MINE_lib_dir}/lib/libtbb.so.12"
+                         "${opencv_MINE_lib_dir}/lib/libprotobuf.so.32"
+                         "${opencv_MINE_lib_dir}/lib/libsharpyuv.so.0"
+                         "${opencv_MINE_lib_dir}/lib/libjpeg.so.9"
+                         "${opencv_MINE_lib_dir}/lib/libwebp.so"
+                         "${opencv_MINE_lib_dir}/lib/libpng16.so.16"
+                         "${opencv_MINE_lib_dir}/lib/libz.so.1"
+                         "${opencv_MINE_lib_dir}/lib/libtiff.so.6"
+                         "${opencv_MINE_lib_dir}/lib/libopenjp2.so.7"
+                         "${opencv_MINE_lib_dir}/lib/libtbb.so.12"
                          )
 list(APPEND ADD_DYNAMIC_LIB ${opencv_MINE_dyn_libs})
 
