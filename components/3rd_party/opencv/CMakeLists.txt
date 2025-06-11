@@ -100,7 +100,7 @@ set(opencv_MINE_dyn_libs "${opencv_MINE_lib_dir}/lib/libopencv_world.so"
                          "${opencv_MINE_lib_dir}/lib/libopenjp2.so.7"
                          "${opencv_MINE_lib_dir}/lib/libtbb.so.12"
                          )
-list(APPEND ADD_DYNAMIC_LIB opencv_MINE_dyn_libs)
+list(APPEND ADD_DYNAMIC_LIB ${opencv_MINE_dyn_libs})
 
 if(NOT ADD_INCLUDE)
 
