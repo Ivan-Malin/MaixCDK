@@ -68,22 +68,22 @@ inline int64_t get_uptime_nanoseconds() {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
 }
 
-inline cv::Mat maix_image_to_cv_mat(const maix::image::Image &img)
+inline cv::Mat maix_image_to_cv_mat(const maix::image::Image* img)
 {
-    if (img.format() == maix::image::Format::RGB888)
+    if (img->format() == maix::image::Format::FMT_BGR888)
     {
         // Создаем cv::Mat из данных изображения
-        return cv::Mat(img.height(), img.width(), CV_8UC3, (void *)img.data());
+        return cv::Mat(img->height(), img->width(), CV_8UC3, (void *)img->data());
     }
-    else if (img.format() == maix::image::Format::GRAYSCALE)
+    else if (img->format() == maix::image::Format::FMT_GRAYSCALE)
     {
-        return cv::Mat(img.height(), img.width(), CV_8UC1, (void *)img.data());
+        return cv::Mat(img->height(), img->width(), CV_8UC1, (void *)img->data());
     }
-    else if (img.format() == maix::image::Format::RGB565)
+    else if (img->format() == maix::image::Format::FMT_BGR565)
     {
         // Нужно сначала преобразовать RGB565 -> RGB888
-        maix::image::Image rgb888_img = img.to_format(maix::image::Format::RGB888);
-        return cv::Mat(rgb888_img.height(), rgb888_img.width(), CV_8UC3, (void *)rgb888_img.data());
+        maix::image::Image* rgb888_img = img->to_format(maix::image::Format::FMT_BGR888);
+        return cv::Mat(rgb888_img->height(), rgb888_img->width(), CV_8UC3, (void *)rgb888_img->data());
     }
     else
     {
