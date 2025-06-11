@@ -82,7 +82,7 @@ set(opencv_libs
     # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/liblibwebp.a"
     # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libquirc.a"
 
-    "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libzlib.a"
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libzlib.a"
 )
 list(APPEND ADD_STATIC_LIB ${opencv_libs})
 list(APPEND ADD_DYNAMIC_LIB "${opencv_lib_dir}/lib/libopencv_world.so")
