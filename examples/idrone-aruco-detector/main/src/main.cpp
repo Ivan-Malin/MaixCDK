@@ -37,7 +37,7 @@ public:
 protected:
     void processor_run() override {
         std::cout << "Trying to recieve packet" << std::endl;
-        Packet* packet = get_sub_data_packet("frame");
+        Packet* packet = get_sub_data_packet("input_frame");
         std::cout << "Trying to recieved packet" << std::endl;
         if (!packet) {
             std::cerr << "Failed to get frame packet" << std::endl;
