@@ -51,9 +51,44 @@ set(zmq_lib_dir "lib")
 set(zmq_lib_dynamic_lib_file   ${zmq_lib_dir}/libzmq.so
                                ${zmq_lib_dir}/libbsd.so.0)
 list(APPEND ADD_DYNAMIC_LIB ${zmq_lib_dynamic_lib_file})
-# find_package(ZeroMQ REQUIRED)
 list(APPEND ADD_INCLUDE ${zmq_lib_dir}/include)
 set_property(SOURCE ${zmq_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+
+
+# set(opencv_lib_dynamic_lib_file   ${opencv_lib_dir}/)
+# list(APPEND ADD_DYNAMIC_LIB ${opencv_lib_dynamic_lib_file})
+# list(APPEND ADD_INCLUDE ${opencv_lib_dir}/include)
+# set_property(SOURCE ${opencv_lib_dynamic_lib_file} PROPERTY GENERATED 1)
+
+# Opencv
+set(opencv_lib_dir "lib")
+set(opencv_libs
+    # "${opencv_lib_dir}/static_lib/libopencv_world.so"
+
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libade.a"
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libIlmImf.a"
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libittnotify.a"
+
+    "${opencv_lib_dir}/lib/libjpeg.a"
+    "${opencv_lib_dir}/lib/libpng.a"
+
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/liblibjpeg-turbo.a"
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/liblibopenjp2.a"
+    # /home/user/licheesg4/buildroot/output/cvitek_SG200X_musl_riscv64/per-package/opencv4/target/usr/lib
+    "${opencv_lib_dir}/lib/libopenjp2.a"
+    #"${opencv_lib_dir}/static_lib/opencv4/3rdparty/liblibpng.a"
+
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/liblibtiff.a"
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/liblibwebp.a"
+    # "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libquirc.a"
+
+    "${opencv_lib_dir}/static_lib/opencv4/3rdparty/libzlib.a"
+)
+list(APPEND ADD_STATIC_LIB ${opencv_libs})
+list(APPEND ADD_DYNAMIC_LIB "${opencv_lib_dir}/lib/libopencv_world.so")
+list(APPEND ADD_REQUIREMENTS pthread dl)
+list(APPEND ADD_DEFINITIONS -fopenmp)
+list(APPEND ADD_INCLUDE "${opencv_lib_dir}/include/opencv4")
 
 # Add lib search path to link flags
 # foreach(abs_dir ${g_link_search_path})
