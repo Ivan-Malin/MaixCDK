@@ -89,6 +89,8 @@ if((PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2) AND NOT CONFIG_OPENCV_COMPILE_FROM_SO
     endif()
 endif()
 
+set(opencv_MINE_lib_dir "lib")
+list(APPEND ADD_INCLUDE "${opencv_MINE_lib_dir}/include/opencv4")
 
 if(NOT ADD_INCLUDE)
 
@@ -179,7 +181,6 @@ if(NOT ADD_INCLUDE)
     list(APPEND ADD_FILE_DEPENDS ${opencv_header})
     set_property(SOURCE ${opencv_header} PROPERTY GENERATED 1)
 endif()
-
 # register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
 register_component()
 
