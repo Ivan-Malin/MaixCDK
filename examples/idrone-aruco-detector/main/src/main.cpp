@@ -26,8 +26,10 @@ class ArucoModule : public ConfigurableSocketModule {
 public:
     ArucoModule(const std::string& controller_ip, const std::string& module_name) :
         ConfigurableSocketModule(controller_ip, module_name),
-        dictionary(cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250)),
-        detectorParams(cv::aruco::DetectorParameters::create())
+        // Явное создание объекта Dictionary через new
+        dictionary(new cv::aruco::Dictionary(cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250))),
+        // Явное создание объекта DetectorParameters через new
+        detectorParams(new cv::aruco::DetectorParameters())
     {
         // Здесь можно инициализировать параметры ArUco, если нужно
     }
@@ -47,7 +49,7 @@ protected:
         std::vector<std::vector<cv::Point2f>> corners, rejected;
         std::vector<int> ids;
 
-        // Используем cv::Ptr для параметров детектора
+        // Детекция маркеров ArUco
         cv::aruco::detectMarkers(img_maix, dictionary, corners, ids, detectorParams, rejected);
 
         json detected_markers;
