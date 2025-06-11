@@ -25,7 +25,7 @@ using json = nlohmann::json;
 class ArucoModule : public ConfigurableSocketModule {
 public:
     ArucoModule(const std::string& controller_ip, const std::string& module_name) :
-        ConfigurableSocketModule(controller_ip, module_name),
+        ConfigurableSocketModule(controller_ip, module_name)
         // Явное создание объекта Dictionary через new
         // dictionary(new cv::aruco::Dictionary(cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250))),
         // // Явное создание объекта DetectorParameters через new
