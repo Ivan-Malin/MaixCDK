@@ -15,7 +15,7 @@
 #include "socks.hpp"
 #include "opencv2/opencv.hpp"
 #include "opencv2/freetype.hpp"
-#include "opencv2/aruco.hpp"
+// #include "opencv2/aruco.hpp"
 #include <nlohmann/json.hpp>
 
 using namespace std;
@@ -27,9 +27,9 @@ public:
     ArucoModule(const std::string& controller_ip, const std::string& module_name) :
         ConfigurableSocketModule(controller_ip, module_name),
         // Явное создание объекта Dictionary через new
-        dictionary(new cv::aruco::Dictionary(cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250))),
-        // Явное создание объекта DetectorParameters через new
-        detectorParams(new cv::aruco::DetectorParameters())
+        // dictionary(new cv::aruco::Dictionary(cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250))),
+        // // Явное создание объекта DetectorParameters через new
+        // detectorParams(new cv::aruco::DetectorParameters())
     {
         // Здесь можно инициализировать параметры ArUco, если нужно
     }
@@ -46,57 +46,58 @@ protected:
 
         cv::Mat img_maix = Packet::packet_to_cv_mat(packet);
 
-        std::vector<std::vector<cv::Point2f>> corners, rejected;
-        std::vector<int> ids;
+        // std::vector<std::vector<cv::Point2f>> corners, rejected;
+        // std::vector<int> ids;
 
         // Детекция маркеров ArUco
-        cv::aruco::detectMarkers(img_maix, dictionary, corners, ids, detectorParams, rejected);
+        // cv::aruco::detectMarkers(img_maix, dictionary, corners, ids, detectorParams, rejected);
 
-        json detected_markers;
+        // json detected_markers;
 
-        // Записываем ids
-        detected_markers["ids"] = json::array();
-        for (int id : ids) {
-            detected_markers["ids"].push_back(id);
-        }
+        // // Записываем ids
+        // detected_markers["ids"] = json::array();
+        // for (int id : ids) {
+        //     detected_markers["ids"].push_back(id);
+        // }
 
-        // Записываем углы
-        detected_markers["corners"] = json::array();
-        for (const auto& corner : corners) {
-            json corner_array = json::array();
-            for (const auto& point : corner) {
-                json pt = json::array();
-                pt.push_back(point.x);
-                pt.push_back(point.y);
-                corner_array.push_back(pt);
-            }
-            detected_markers["corners"].push_back(corner_array);
-        }
+        // // Записываем углы
+        // detected_markers["corners"] = json::array();
+        // for (const auto& corner : corners) {
+        //     json corner_array = json::array();
+        //     for (const auto& point : corner) {
+        //         json pt = json::array();
+        //         pt.push_back(point.x);
+        //         pt.push_back(point.y);
+        //         corner_array.push_back(pt);
+        //     }
+        //     detected_markers["corners"].push_back(corner_array);
+        // }
 
-        // Записываем rejected
-        detected_markers["rejected"] = json::array();
-        for (const auto& rej : rejected) {
-            json rej_array = json::array();
-            for (const auto& point : rej) {
-                json pt = json::array();
-                pt.push_back(point.x);
-                pt.push_back(point.y);
-                rej_array.push_back(pt);
-            }
-            detected_markers["rejected"].push_back(rej_array);
-        }
+        // // Записываем rejected
+        // detected_markers["rejected"] = json::array();
+        // for (const auto& rej : rejected) {
+        //     json rej_array = json::array();
+        //     for (const auto& point : rej) {
+        //         json pt = json::array();
+        //         pt.push_back(point.x);
+        //         pt.push_back(point.y);
+        //         rej_array.push_back(pt);
+        //     }
+        //     detected_markers["rejected"].push_back(rej_array);
+        // }
 
-        // Создаём выходной пакет
-        Packet* output_packet = new Packet(detected_markers.dump(), get_uptime_nanoseconds());
-        set_pub_data_packet("detected_markers", output_packet);
+        // // Создаём выходной пакет
+        // Packet* output_packet = new Packet(detected_markers.dump(), get_uptime_nanoseconds());
+        // set_pub_data_packet("detected_markers", output_packet);
 
         // Очистка
+        delete img_maix;
         delete packet;
     }
 
-private:
-    cv::Ptr<cv::aruco::Dictionary> dictionary;
-    cv::Ptr<cv::aruco::DetectorParameters> detectorParams;
+// private:
+//     cv::Ptr<cv::aruco::Dictionary> dictionary;
+//     cv::Ptr<cv::aruco::DetectorParameters> detectorParams;
 };
 
 int _main(int argc, char* argv[])
