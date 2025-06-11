@@ -91,6 +91,7 @@ endif()
 
 set(opencv_MINE_lib_dir "lib")
 list(APPEND ADD_INCLUDE "${opencv_MINE_lib_dir}/include/opencv4")
+list(APPEND ADD_DYNAMIC_LIB "${opencv_MINE_lib_dir}/lib/libopencv_world.so")
 
 if(NOT ADD_INCLUDE)
 
