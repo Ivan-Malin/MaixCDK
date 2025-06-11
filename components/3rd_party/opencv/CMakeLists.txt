@@ -134,7 +134,11 @@ if(NOT ADD_INCLUDE)
         set_property(SOURCE ${opencv_world_lib} PROPERTY GENERATED 1)
         list(APPEND ADD_FILE_DEPENDS ${opencv_world_lib})
     else()
-        set(opencv_libs "${opencv_install_dir}/lib/libopencv_core.so.${so_suffix_number}"
+        set(opencv_MINE_lib_dir "lib")
+        list(APPEND ADD_INCLUDE "${opencv_MINE_lib_dir}/include/opencv4")
+        set(opencv_libs 
+                        "${opencv_MINE_lib_dir}/lib/libopencv_world.so"
+                        # "${opencv_install_dir}/lib/libopencv_core.so.${so_suffix_number}"
                         # "${opencv_install_dir}/lib/libopencv_gapi.so.${so_suffix_number}"
                         "${opencv_install_dir}/lib/libopencv_highgui.so.${so_suffix_number}"
                         "${opencv_install_dir}/lib/libopencv_imgcodecs.so.${so_suffix_number}"
