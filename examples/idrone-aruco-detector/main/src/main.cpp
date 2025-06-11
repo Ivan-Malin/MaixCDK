@@ -91,7 +91,6 @@ protected:
         // set_pub_data_packet("detected_markers", output_packet);
 
         // Очистка
-        delete img_maix;
         delete packet;
     }
 
