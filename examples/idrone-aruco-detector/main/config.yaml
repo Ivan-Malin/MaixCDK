@@ -1,0 +1,9 @@
+name: aruco_detector
+type: processor
+sockets:
+  sock_in:
+    input_frame: image
+  sock_out:
+    drawed_frame: image
+    detected_markers: json 
+params: {}

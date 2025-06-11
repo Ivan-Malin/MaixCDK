@@ -66,6 +66,29 @@ inline int64_t get_uptime_nanoseconds() {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
 }
 
+inline cv::Mat maix_image_to_cv_mat(const maix::image::Image &img)
+{
+    if (img.format() == maix::image::Format::RGB888)
+    {
+        // Создаем cv::Mat из данных изображения
+        return cv::Mat(img.height(), img.width(), CV_8UC3, (void *)img.data());
+    }
+    else if (img.format() == maix::image::Format::GRAYSCALE)
+    {
+        return cv::Mat(img.height(), img.width(), CV_8UC1, (void *)img.data());
+    }
+    else if (img.format() == maix::image::Format::RGB565)
+    {
+        // Нужно сначала преобразовать RGB565 -> RGB888
+        maix::image::Image rgb888_img = img.to_format(maix::image::Format::RGB888);
+        return cv::Mat(rgb888_img.height(), rgb888_img.width(), CV_8UC3, (void *)rgb888_img.data());
+    }
+    else
+    {
+        throw std::runtime_error("Unsupported image format");
+    }
+}
+
 class FrameBuffer {
 public:
     uint8_t* data_ptr;
@@ -329,6 +352,22 @@ public:
         delete data_in;
 
         return img_transfered;
+    }
+
+    static cv::Mat packet_to_cv_mat(const Packet* packet)
+    {
+        // Получаем размеры изображения
+        int width  = (int) packet->data["shape"][1];
+        int height = (int) packet->data["shape"][0];
+
+        // Предполагаем, что формат — BGR888 (3 байта на пиксель)
+        cv::Mat mat(height, width, CV_8UC3, (void*)packet->frame->data_ptr);
+
+        // Возвращаем копию, чтобы владеть данными (если data_ptr может быть переиспользован/освобождён)
+        cv::Mat result;
+        mat.copyTo(result);
+
+        return result;
     }
 
     static Packet* deserialize(const char* data, size_t size) {
