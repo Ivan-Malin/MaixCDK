@@ -25,10 +25,11 @@ using json = nlohmann::json;
 class ArucoModule : public ConfigurableSocketModule {
 public:
     ArucoModule(const std::string& controller_ip, const std::string& module_name) :
-        ConfigurableSocketModule(controller_ip, module_name)
+        ConfigurableSocketModule(controller_ip, module_name),
+        dictionary(cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250)),
+        detectorParams(cv::aruco::DetectorParameters::create())
     {
-        // Используем cv::Ptr для хранения словаря
-        dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+        // Здесь можно инициализировать параметры ArUco, если нужно
     }
 
 protected:
@@ -46,10 +47,9 @@ protected:
         std::vector<std::vector<cv::Point2f>> corners, rejected;
         std::vector<int> ids;
 
-        // Исправленный вызов detectMarkers с использованием cv::Ptr
+        // Используем cv::Ptr для параметров детектора
         cv::aruco::detectMarkers(img_maix, dictionary, corners, ids, detectorParams, rejected);
 
-        // Используем nlohmann::json вместо Json::Value
         json detected_markers;
 
         // Записываем ids
@@ -93,8 +93,8 @@ protected:
     }
 
 private:
-    cv::Ptr<cv::aruco::Dictionary> dictionary;  // Исправлен тип на cv::Ptr
-    cv::aruco::DetectorParameters detectorParams = cv::aruco::DetectorParameters();
+    cv::Ptr<cv::aruco::Dictionary> dictionary;
+    cv::Ptr<cv::aruco::DetectorParameters> detectorParams;
 };
 
 int _main(int argc, char* argv[])
