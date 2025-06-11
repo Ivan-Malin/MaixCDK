@@ -89,28 +89,6 @@ if((PLATFORM_MAIXCAM OR PLATFORM_MAIXCAM2) AND NOT CONFIG_OPENCV_COMPILE_FROM_SO
     endif()
 endif()
 
-set(opencv_MINE_lib_dir "lib")
-list(APPEND ADD_INCLUDE "${opencv_MINE_lib_dir}/include/opencv4")
-set(opencv_MINE_dyn_libs "${opencv_MINE_lib_dir}/lib/libopencv_world.so"
-                         "${opencv_MINE_lib_dir}/lib/libopencv_world.so.409"
-                         "${opencv_MINE_lib_dir}/lib/libjpeg.so.9"
-                         "${opencv_MINE_lib_dir}/lib/libwebp.so.7"
-                         "${opencv_MINE_lib_dir}/lib/libpng16.so.16"
-                         "${opencv_MINE_lib_dir}/lib/libz.so.1"
-                         "${opencv_MINE_lib_dir}/lib/libtiff.so.6"
-                         "${opencv_MINE_lib_dir}/lib/libopenjp2.so.7"
-                         "${opencv_MINE_lib_dir}/lib/libtbb.so.12"
-                         "${opencv_MINE_lib_dir}/lib/libprotobuf.so.32"
-                         "${opencv_MINE_lib_dir}/lib/libsharpyuv.so.0"
-                         "${opencv_MINE_lib_dir}/lib/libjpeg.so.9"
-                         "${opencv_MINE_lib_dir}/lib/libwebp.so"
-                         "${opencv_MINE_lib_dir}/lib/libpng16.so.16"
-                         "${opencv_MINE_lib_dir}/lib/libz.so.1"
-                         "${opencv_MINE_lib_dir}/lib/libtiff.so.6"
-                         "${opencv_MINE_lib_dir}/lib/libopenjp2.so.7"
-                         "${opencv_MINE_lib_dir}/lib/libtbb.so.12"
-                         )
-list(APPEND ADD_DYNAMIC_LIB ${opencv_MINE_dyn_libs})
 
 if(NOT ADD_INCLUDE)
 
@@ -156,11 +134,7 @@ if(NOT ADD_INCLUDE)
         set_property(SOURCE ${opencv_world_lib} PROPERTY GENERATED 1)
         list(APPEND ADD_FILE_DEPENDS ${opencv_world_lib})
     else()
-        set(opencv_MINE_lib_dir "lib")
-        list(APPEND ADD_INCLUDE "${opencv_MINE_lib_dir}/include/opencv4")
-        set(opencv_libs 
-                        "${opencv_MINE_lib_dir}/lib/libopencv_world.so"
-                        # "${opencv_install_dir}/lib/libopencv_core.so.${so_suffix_number}"
+        set(opencv_libs "${opencv_install_dir}/lib/libopencv_core.so.${so_suffix_number}"
                         # "${opencv_install_dir}/lib/libopencv_gapi.so.${so_suffix_number}"
                         "${opencv_install_dir}/lib/libopencv_highgui.so.${so_suffix_number}"
                         "${opencv_install_dir}/lib/libopencv_imgcodecs.so.${so_suffix_number}"
@@ -201,6 +175,7 @@ if(NOT ADD_INCLUDE)
     list(APPEND ADD_FILE_DEPENDS ${opencv_header})
     set_property(SOURCE ${opencv_header} PROPERTY GENERATED 1)
 endif()
+
 # register component, DYNAMIC or SHARED flags will make component compiled to dynamic(shared) lib
 register_component()
 
