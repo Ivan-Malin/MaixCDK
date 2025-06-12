@@ -33,7 +33,7 @@ public:
         
         // Add RTSP stream
         rtsp = rtsp::Rtsp();
-        rtsp.bind_camera(&cam2);
+        rtsp.bind_camera(cam2);
         // Get RTSP info
         log::info("url:%s", rtsp.get_url().c_str());
         std::vector<std::string> url = rtsp.get_urls();
