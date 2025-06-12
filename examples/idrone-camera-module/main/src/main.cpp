@@ -46,7 +46,7 @@ public:
 
 protected:
     camera::Camera cam;
-    rtsp::Rtsp rtsp
+    rtsp::Rtsp rtsp;
     
     // camera::Camera *cam_high_res;
     camera::Camera *cam_low_res;
