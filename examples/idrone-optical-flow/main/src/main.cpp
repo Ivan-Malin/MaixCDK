@@ -82,36 +82,37 @@ protected:
         std::cout << "OF 5" << std::endl;
         
         // Calculate magnitude and angle
+        // Calculate magnitude and angle
         cv::Mat magnitude, angle;
         cv::cartToPolar(flow_x, flow_y, magnitude, angle, true);
-        std::cout << "OF 6" << std::endl;
-        
-        // Convert angle to 0-180 for HSV Hue
-        angle *= (1.0 / 2.0);
 
         std::cout << "OF 6" << std::endl;
-        
+
         // Normalize magnitude to 0-255
         cv::Mat mag_norm;
         cv::normalize(magnitude, mag_norm, 0, 255, cv::NORM_MINMAX, CV_8UC1);
 
         std::cout << "OF 7" << std::endl;
-        
-        // Create HSV image
-        std::vector<cv::Mat> hsv_planes = {
-            angle, 
-            cv::Mat_<uchar>::ones(angle.size()) * 255, // Saturation
-            mag_norm // Value
-        };
 
-        std::cout << "OF 8" << std::endl;
+        // Convert angle to 0-180 and to CV_8U
+        cv::Mat angle_8u;
+        angle.convertTo(angle_8u, CV_8UC1, 1.0 / 2.0);  // Hue range [0, 180]
         
+        std::cout << "OF 8" << std::endl;
+
+        // Saturation channel
+        cv::Mat sat = cv::Mat_<uchar>::ones(angle.size()) * 255;
+
+        std::cout << "OF 8.5" << std::endl;
+
+        // Merge HSV planes
+        std::vector<cv::Mat> hsv_planes = { angle_8u, sat, mag_norm };
         cv::Mat hsv_image;
         cv::merge(hsv_planes, hsv_image);
 
         std::cout << "OF 9" << std::endl;
-        
-        // Convert HSV to BGR
+
+        // Convert to BGR for output
         cv::Mat flow_bgr;
         cv::cvtColor(hsv_image, flow_bgr, cv::COLOR_HSV2BGR);
 
