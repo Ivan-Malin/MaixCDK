@@ -425,7 +425,7 @@ namespace maix::rtsp
             return err::ERR_RUNTIME;
         }
         
-        std::cout << "RTSP4" << std::endl;
+        std::cout << "RTSP4 " << param->camera->width() << std::endl;
 
         if (param->camera->width() % 32 != 0) {
             log::error("camera width must be multiple of 32!\r\n");

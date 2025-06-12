@@ -28,10 +28,12 @@ public:
         int cam_buffer_num = 3;
         cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
         // cam_high_res = cam.add_channel(640, 480);
+        cam_low_res = cam.add_channel(320, 240);
+        cam2 = cam.add_channel();
         
         // Add RTSP stream
         rtsp = rtsp::Rtsp();
-        rtsp.bind_camera(&cam);
+        rtsp.bind_camera(&cam2);
         // Get RTSP info
         log::info("url:%s", rtsp.get_url().c_str());
         std::vector<std::string> url = rtsp.get_urls();
@@ -40,7 +42,6 @@ public:
         }
         err::check_raise(rtsp.start());
         std::cout << "Started 1" << std::endl;
-        cam_low_res = cam.add_channel(320, 240);
         std::cout << "Started 2" << std::endl;
     }
 
@@ -50,6 +51,7 @@ protected:
     
     // camera::Camera *cam_high_res;
     camera::Camera *cam_low_res;
+    camera::Camera *cam2;
 
     void processor_run() override {
         // Проверяем, есть ли новое изображение
