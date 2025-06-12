@@ -49,7 +49,6 @@ protected:
 
         // Отправляем результат
         set_pub_data_packet("output_frame", low_res_packet);
-        rtsp.stop();
         delete low_res_packet;
         delete img_low_res;
     }
