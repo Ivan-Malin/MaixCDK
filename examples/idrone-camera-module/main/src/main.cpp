@@ -19,7 +19,7 @@ using namespace maix;
 class CameraModule : public ConfigurableSocketModule {
 public:
     CameraModule(const std::string& controller_ip, const std::string& module_name, camera::Camera _cam) :
-        ConfigurableSocketModule(controller_ip, module_name)
+        ConfigurableSocketModule(controller_ip, module_name),
         cam(_cam) {
         // Никакой дополнительной инициализации не требуется
         // cam_high_res = cam.add_channel(640, 480);
