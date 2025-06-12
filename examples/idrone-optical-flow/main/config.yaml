@@ -1,8 +1,8 @@
-name: aruco_detector
+name: opticalflow
 type: processor
 sockets:
   sock_in:
     input_frame: image
   sock_out:
-    drawed_frame: image
+    output_frame: image
 params: {}
