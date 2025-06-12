@@ -445,7 +445,7 @@ namespace maix::rtsp
                                         .set_audio_channels(param->audio_recorder->channel())
                                         .set_audio_sample_rate(param->audio_recorder->sample_rate());
         }
-        std::cout << "RTSP7" << std::endl;
+        std::cout << "RTSP7"  << param->camera->width() << std::endl;
         param->rtsp_server = rtsp_builder.build();
         std::cout << "RTSP8" << std::endl;
         // create encoder
