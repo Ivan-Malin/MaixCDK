@@ -28,11 +28,11 @@ public:
         int cam_buffer_num = 3;
         cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
         // cam_high_res = cam.add_channel(640, 480);
-        cam_low_res = cam.add_channel(cam_w, cam_h);
+        cam_low_res = cam.add_channel(320, 240);
 
         // Add RTSP stream
         auto audio_recorder = audio::Recorder();
-        rtsp::Rtsp rtsp = rtsp::Rtsp();
+        rtsp = rtsp::Rtsp();
         rtsp.bind_camera(&cam);
         rtsp.bind_audio_recorder(&audio_recorder);
         // Get RTSP info
@@ -46,6 +46,7 @@ public:
 
 protected:
     camera::Camera cam;
+    rtsp::Rtsp rtsp
     
     // camera::Camera *cam_high_res;
     camera::Camera *cam_low_res;
@@ -56,7 +57,7 @@ protected:
         try {
             // img_high_res = cam_high_res->read();
             img_low_res  = cam_low_res->read();
-            img_low_res->resize(320, 240, image::Fit::FIT_FILL, image::ResizeMethod::NEAREST);
+            // img_low_res->resize(320, 240, image::Fit::FIT_FILL, image::ResizeMethod::NEAREST);
         } catch (std::exception &e) {
             time::sleep_ms(10);
             return;
@@ -67,6 +68,7 @@ protected:
 
         // Отправляем результат
         set_pub_data_packet("output_frame", low_res_packet);
+        rtsp.stop();
         delete low_res_packet;
         delete img_low_res;
     }
