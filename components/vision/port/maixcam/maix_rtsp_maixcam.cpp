@@ -454,8 +454,9 @@ namespace maix::rtsp
             param->encoder = nullptr;
         }
         std::cout << "RTSP9" << std::endl;
+        // param->camera;
         std::cout << "RTSP9.5" << std::endl;
-        std::cout << "RTSP9.75 " << param->camera->width() << std::endl;
+        std::cout << "RTSP9.75 " << (int) param->camera->width() << std::endl;
         // std::cout << "RTSP9" \
         //     << param->camera->width() << ", " \
         //     << param->camera->height() << ", " \
