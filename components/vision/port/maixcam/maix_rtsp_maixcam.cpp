@@ -404,51 +404,68 @@ namespace maix::rtsp
     }
 
     err::Err Rtsp::start() {
+        std::cout << "RTSP1" << std::endl;
         err::Err err = err::ERR_NONE;
         rtsp_param_t *param = (rtsp_param_t *)_param;
+        std::cout << "RTSP1.5" << std::endl;
         if (!param) {
             return err::ERR_RUNTIME;
         }
+        std::cout << "RTSP2" << std::endl;
 
         if (param->status != RTSP_IDLE) {
             return err::ERR_BUSY;
         }
+
+        std::cout << "RTSP3" << std::endl;
 
         // check camera
         if (!param->bind_camera || !param->camera) {
             log::error("You need bind a camera!");
             return err::ERR_RUNTIME;
         }
+        
+        std::cout << "RTSP4" << std::endl;
 
         if (param->camera->width() % 32 != 0) {
             log::error("camera width must be multiple of 32!\r\n");
             return err::ERR_RUNTIME;
         }
 
+        std::cout << "RTSP5" << std::endl;
+
         // create rtsp server
         MaixRtspServerBuilder rtsp_builder = MaixRtspServerBuilder()
                                     .set_ip(_ip)
                                     .set_port(this->_port)
                                     .set_session_name("live");
+        std::cout << "RTSP6" << std::endl;
         if (param->bind_audio_recorder && param->audio_recorder) {
             rtsp_builder = rtsp_builder.set_audio(true)
                                         .set_audio_channels(param->audio_recorder->channel())
                                         .set_audio_sample_rate(param->audio_recorder->sample_rate());
         }
+        std::cout << "RTSP7" << std::endl;
         param->rtsp_server = rtsp_builder.build();
-
+        std::cout << "RTSP8" << std::endl;
         // create encoder
         if (param->encoder) {
             delete param->encoder;
             param->encoder = nullptr;
         }
+        std::cout << "RTSP9" << std::endl;
         param->encoder = new video::Encoder("", param->camera->width(), param->camera->height(), image::Format::FMT_YVU420SP, video::VIDEO_H264, param->fps, 50, param->encoder_bitrate);
+        std::cout << "RTSP10" << std::endl;
         err::check_null_raise(param->encoder, "Create video encoder failed!");
+        std::cout << "RTSP11" << std::endl;
 
         // create frame package
         param->ffmpeg_packer = new ffmpeg::FFmpegPacker();
+        std::cout << "RTSP12" << std::endl;
         err::check_null_raise(param->ffmpeg_packer, "ffmpeg packer init failed");
+        std::cout << "RTSP13" << std::endl;
         err::check_bool_raise(!param->ffmpeg_packer->config2("context_format_name", "flv"), "rtmp config failed!");
+        std::cout << "RTSP14" << std::endl;
         if (param->bind_audio_recorder && param->audio_recorder) {
             if (param->audio_recorder->format() != audio::FMT_S16_LE) {
                 log::error("Only support audio::FMT_S16_LE format!");
@@ -460,20 +477,23 @@ namespace maix::rtsp
             err::check_bool_raise(!param->ffmpeg_packer->config("audio_bitrate", param->audio_bitrate), "rtmp config failed!");
             err::check_bool_raise(!param->ffmpeg_packer->config("audio_format", AV_SAMPLE_FMT_S16), "rtmp config failed!");
         }
+        std::cout << "RTSP15" << std::endl;
         param->ffmpeg_packer->open();
-
+        std::cout << "RTSP16" << std::endl;
         // start audio
         if (param->bind_audio_recorder) {
             param->audio_recorder->reset(true);
         }
-
+        std::cout << "RTSP17" << std::endl;
         // create runtime thread
         param->status = RTSP_RUNNING;
         _thread = new thread::Thread(_camera_push_thread, param);
+        std::cout << "RTSP18" << std::endl;
         if (_thread == NULL) {
             log::error("create camera thread failed!\r\n");
             return err::ERR_RUNTIME;
         }
+        std::cout << "RTSP19" << std::endl;
         return err;
     }
 
