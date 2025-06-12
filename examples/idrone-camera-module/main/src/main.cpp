@@ -31,7 +31,7 @@ public:
         cam_low_res = cam.add_channel(320, 240);
 
         // Add RTSP stream
-        auto audio_recorder = audio::Recorder();
+        audio_recorder = audio::Recorder();
         rtsp = rtsp::Rtsp();
         rtsp.bind_camera(&cam);
         rtsp.bind_audio_recorder(&audio_recorder);
@@ -42,11 +42,13 @@ public:
             log::info("url[%d]:%s", i, url[i].c_str());
         }
         err::check_raise(rtsp.start());
+        std::cout << "Started" << std::endl;
     }
 
 protected:
     camera::Camera cam;
     rtsp::Rtsp rtsp;
+    audio::Recorder audio_recorder;
     
     // camera::Camera *cam_high_res;
     camera::Camera *cam_low_res;
