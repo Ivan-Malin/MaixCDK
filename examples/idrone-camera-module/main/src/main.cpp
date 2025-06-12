@@ -26,14 +26,12 @@ public:
         image::Format cam_fmt = image::Format::FMT_YVU420SP;
         int cam_fps = -1;
         int cam_buffer_num = 3;
-        cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
+        cam = new camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
         // cam_high_res = cam.add_channel(640, 480);
-        cam_low_res = cam.add_channel(320, 240);
-        cam2 = cam.add_channel();
         
         // Add RTSP stream
         rtsp = rtsp::Rtsp();
-        rtsp.bind_camera(cam2);
+        rtsp.bind_camera(cam);
         // Get RTSP info
         log::info("url:%s", rtsp.get_url().c_str());
         std::vector<std::string> url = rtsp.get_urls();
@@ -42,16 +40,15 @@ public:
         }
         err::check_raise(rtsp.start());
         std::cout << "Started 1" << std::endl;
-        std::cout << "Started 2" << std::endl;
+        cam_low_res = cam->add_channel(320, 240);
     }
 
 protected:
-    camera::Camera cam;
+    camera::Camera *cam;
     rtsp::Rtsp rtsp;
     
     // camera::Camera *cam_high_res;
     camera::Camera *cam_low_res;
-    camera::Camera *cam2;
 
     void processor_run() override {
         // Проверяем, есть ли новое изображение
