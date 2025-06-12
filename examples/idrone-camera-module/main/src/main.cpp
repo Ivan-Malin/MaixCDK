@@ -18,17 +18,16 @@ using namespace maix;
 
 class CameraModule : public ConfigurableSocketModule {
 public:
-    CameraModule(const std::string& controller_ip, const std::string& module_name, camera::Camera _cam) :
+    CameraModule(const std::string& controller_ip, const std::string& module_name, camera::Camera* _cam) :
         ConfigurableSocketModule(controller_ip, module_name),
         cam(_cam) {
         // Никакой дополнительной инициализации не требуется
         // cam_high_res = cam.add_channel(640, 480);
-        cam_low_res = cam.add_channel(320, 240);
+        cam_low_res = cam->add_channel(320, 240);
     }
 
 protected:
-    camera::Camera cam;
-    rtsp::Rtsp rtsp;
+    camera::Camera* cam;
     
     // camera::Camera *cam_high_res;
     camera::Camera *cam_low_res;
@@ -87,11 +86,14 @@ int _main(int argc, char* argv[])
     err::check_raise(rtsp.start());
     std::cout << "Started" << std::endl;
     
-    CameraModule cameraModule(controller_ip, module_name, cam);
+    CameraModule cameraModule(controller_ip, module_name, &cam);
     cameraModule.start();
 
-    std::cin.get(); // keep running
+    while(!app::need_exit()) {
+        time::sleep_ms(1000);
+    }
     cameraModule.stop();
+    rtsp.stop();
 
     return 0;
 }
