@@ -95,9 +95,9 @@ protected:
         cv::cvtColor(hsv_image, flow_bgr, cv::COLOR_HSV2BGR);
         
         // Convert to maix image (assuming BGR format)
-        maix::image::Image* flow_img = new maix::image::Image(
+        maix::image::Image* flow_img = new image::Image(
             flow_bgr.cols, flow_bgr.rows, 
-            maix::image::PixelFormat::PIXEL_FORMAT_BGR888, 
+            image::FMT_BGR888,
             flow_bgr.data, flow_bgr.step
         );
         
