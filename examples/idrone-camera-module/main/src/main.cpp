@@ -28,7 +28,20 @@ public:
         int cam_buffer_num = 3;
         cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
         // cam_high_res = cam.add_channel(640, 480);
-        cam_low_res = cam.add_channel(320, 240);
+        cam_low_res = cam.add_channel(cam_w, cam_h);
+
+        // Add RTSP stream
+        auto audio_recorder = audio::Recorder();
+        rtsp::Rtsp rtsp = rtsp::Rtsp();
+        rtsp.bind_camera(&cam);
+        rtsp.bind_audio_recorder(&audio_recorder);
+        // Get RTSP info
+        log::info("url:%s", rtsp.get_url().c_str());
+        std::vector<std::string> url = rtsp.get_urls();
+        for (size_t i = 0; i < url.size(); i ++) {
+            log::info("url[%d]:%s", i, url[i].c_str());
+        }
+        err::check_raise(rtsp.start());
     }
 
 protected:
@@ -43,6 +56,7 @@ protected:
         try {
             // img_high_res = cam_high_res->read();
             img_low_res  = cam_low_res->read();
+            img_low_res->resize(320, 240, image::Fit::FIT_FILL, image::ResizeMethod::NEAREST);
         } catch (std::exception &e) {
             time::sleep_ms(10);
             return;
