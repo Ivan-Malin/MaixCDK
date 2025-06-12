@@ -18,33 +18,16 @@ using namespace maix;
 
 class CameraModule : public ConfigurableSocketModule {
 public:
-    CameraModule(const std::string& controller_ip, const std::string& module_name) :
-        ConfigurableSocketModule(controller_ip, module_name) {
+    CameraModule(const std::string& controller_ip, const std::string& module_name, camera::Camera _cam) :
+        ConfigurableSocketModule(controller_ip, module_name)
+        cam(_cam) {
         // Никакой дополнительной инициализации не требуется
-        int cam_w = -1;
-        int cam_h = -1;
-        image::Format cam_fmt = image::Format::FMT_YVU420SP;
-        int cam_fps = -1;
-        int cam_buffer_num = 3;
-        cam = new camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
         // cam_high_res = cam.add_channel(640, 480);
-        
-        // Add RTSP stream
-        rtsp = rtsp::Rtsp();
-        rtsp.bind_camera(cam);
-        // Get RTSP info
-        log::info("url:%s", rtsp.get_url().c_str());
-        std::vector<std::string> url = rtsp.get_urls();
-        for (size_t i = 0; i < url.size(); i ++) {
-            log::info("url[%d]:%s", i, url[i].c_str());
-        }
-        err::check_raise(rtsp.start());
-        std::cout << "Started 1" << std::endl;
-        cam_low_res = cam->add_channel(320, 240);
+        cam_low_res = cam.add_channel(320, 240);
     }
 
 protected:
-    camera::Camera *cam;
+    camera::Camera cam;
     rtsp::Rtsp rtsp;
     
     // camera::Camera *cam_high_res;
@@ -82,8 +65,29 @@ int _main(int argc, char* argv[])
     
     std::string controller_ip = argv[1];
     std::string module_name = argv[2];
+
+    int cam_w = -1;
+    int cam_h = -1;
+    image::Format cam_fmt = image::Format::FMT_YVU420SP;
+    int cam_fps = -1;
+    int cam_buffer_num = 3;
+
+    camera::Camera cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
+    auto audio_recorder = audio::Recorder();
+    rtsp::Rtsp rtsp = rtsp::Rtsp();
+    rtsp.bind_camera(&cam);
+    rtsp.bind_audio_recorder(&audio_recorder);
     
-    CameraModule cameraModule(controller_ip, module_name);
+    // Show debug info
+    log::info("url:%s", rtsp.get_url().c_str());
+    std::vector<std::string> url = rtsp.get_urls();
+    for (size_t i = 0; i < url.size(); i ++) {
+        log::info("url[%d]:%s", i, url[i].c_str());
+    }
+    err::check_raise(rtsp.start());
+    std::cout << "Started" << std::endl;
+    
+    CameraModule cameraModule(controller_ip, module_name, cam);
     cameraModule.start();
 
     std::cin.get(); // keep running
