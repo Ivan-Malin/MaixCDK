@@ -98,7 +98,8 @@ protected:
         maix::image::Image* flow_img = new image::Image(
             flow_bgr.cols, flow_bgr.rows, 
             image::FMT_BGR888,
-            flow_bgr.data, flow_bgr.step
+            flow_bgr.data, flow_bgr.total() * flow_bgr.elemSize(),
+            true
         );
         
         // Create output packet
