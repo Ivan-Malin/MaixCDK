@@ -453,15 +453,18 @@ namespace maix::rtsp
             delete param->encoder;
             param->encoder = nullptr;
         }
-        std::cout << "RTSP9" \
-            << param->camera->width() << ", " \
-            << param->camera->height() << ", " \
-            << image::Format::FMT_YVU420SP << ", " \
-            << video::VIDEO_H264 << ", " \
-            << param->fps << ", " \
-            << 50 << ", " \
-            << param->encoder_bitrate \
-            << std::endl;
+        std::cout << "RTSP9" << std::endl;
+        std::cout << "RTSP9.5" << std::endl;
+        std::cout << "RTSP9.75 " << param->camera->width() << std::endl;
+        // std::cout << "RTSP9" \
+        //     << param->camera->width() << ", " \
+        //     << param->camera->height() << ", " \
+        //     << image::Format::FMT_YVU420SP << ", " \
+        //     << video::VIDEO_H264 << ", " \
+        //     << param->fps << ", " \
+        //     << 50 << ", " \
+        //     << param->encoder_bitrate \
+        //     << std::endl;
         param->encoder = new video::Encoder("", param->camera->width(), param->camera->height(), image::Format::FMT_YVU420SP, video::VIDEO_H264, param->fps, 50, param->encoder_bitrate);
         std::cout << "RTSP10" << std::endl;
         err::check_null_raise(param->encoder, "Create video encoder failed!");

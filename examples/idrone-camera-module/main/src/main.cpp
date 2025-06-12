@@ -28,8 +28,7 @@ public:
         int cam_buffer_num = 3;
         cam = camera::Camera(cam_w, cam_h, cam_fmt, "", cam_fps, cam_buffer_num);
         // cam_high_res = cam.add_channel(640, 480);
-        cam_low_res = cam.add_channel(320, 240);
-
+        
         // Add RTSP stream
         rtsp = rtsp::Rtsp();
         rtsp.bind_camera(&cam);
@@ -40,7 +39,9 @@ public:
             log::info("url[%d]:%s", i, url[i].c_str());
         }
         err::check_raise(rtsp.start());
-        std::cout << "Started" << std::endl;
+        std::cout << "Started 1" << std::endl;
+        cam_low_res = cam.add_channel(320, 240);
+        std::cout << "Started 2" << std::endl;
     }
 
 protected:
