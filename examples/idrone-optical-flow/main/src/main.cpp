@@ -39,10 +39,14 @@ protected:
         std::cout << "Delay_ns: " << get_uptime_nanoseconds() - packet->emit_time_ns << std::endl;
 
         cv::Mat img_maix = Packet::packet_to_cv_mat(packet);
+
+        std::cout << "OF 1" << std::endl;
         
         // Convert to grayscale
         cv::Mat gray;
         cv::cvtColor(img_maix, gray, cv::COLOR_BGR2GRAY);
+
+        std::cout << "OF 2" << std::endl;
         
         if (first_frame) {
             prev_gray = gray.clone();
@@ -50,6 +54,8 @@ protected:
             delete packet;
             return;
         }
+
+        std::cout << "OF 3" << std::endl;
         
         // Calculate optical flow
         cv::Mat flow;
@@ -63,22 +69,33 @@ protected:
             1.1,              // poly_sigma
             cv::OPTFLOW_FARNEBACK_GAUSSIAN // faster than polynomial
         );
+
+        std::cout << "OF 4" << std::endl;
         
         // Split flow into x and y components
         std::vector<cv::Mat> flow_planes(2);
+        std::cout << "OF 4.1" << std::endl;
         cv::split(flow, flow_planes);
+        std::cout << "OF 4.2" << std::endl;
         cv::Mat flow_x = flow_planes[0], flow_y = flow_planes[1];
+
+        std::cout << "OF 5" << std::endl;
         
         // Calculate magnitude and angle
         cv::Mat magnitude, angle;
         cv::cartToPolar(flow_x, flow_y, magnitude, angle, true);
+        std::cout << "OF 6" << std::endl;
         
         // Convert angle to 0-180 for HSV Hue
         angle *= (1.0 / 2.0);
+
+        std::cout << "OF 6" << std::endl;
         
         // Normalize magnitude to 0-255
         cv::Mat mag_norm;
         cv::normalize(magnitude, mag_norm, 0, 255, cv::NORM_MINMAX, CV_8UC1);
+
+        std::cout << "OF 7" << std::endl;
         
         // Create HSV image
         std::vector<cv::Mat> hsv_planes = {
@@ -86,13 +103,19 @@ protected:
             cv::Mat_<uchar>::ones(angle.size()) * 255, // Saturation
             mag_norm // Value
         };
+
+        std::cout << "OF 8" << std::endl;
         
         cv::Mat hsv_image;
         cv::merge(hsv_planes, hsv_image);
+
+        std::cout << "OF 9" << std::endl;
         
         // Convert HSV to BGR
         cv::Mat flow_bgr;
         cv::cvtColor(hsv_image, flow_bgr, cv::COLOR_HSV2BGR);
+
+        std::cout << "OF 10" << std::endl;
         
         // Convert to maix image (assuming BGR format)
         maix::image::Image* flow_img = new image::Image(
@@ -101,9 +124,13 @@ protected:
             flow_bgr.data, flow_bgr.total() * flow_bgr.elemSize(),
             true
         );
+
+        std::cout << "OF 11" << std::endl;
         
         // Create output packet
         Packet* low_res_packet = Packet::maix_image_to_packet(flow_img, packet->emit_time_ns);
+
+        std::cout << "OF 12" << std::endl;
         
         // Send result
         set_pub_data_packet("output_frame", low_res_packet);
