@@ -40,14 +40,18 @@ protected:
 
         cv::Mat img_maix = Packet::packet_to_cv_mat(packet);
 
+        // Resize to 80x60 (1/4 of 320x240)
+        cv::Mat resized_img;
+        cv::resize(img_maix, resized_img, cv::Size(80, 60), 0, 0, cv::INTER_NEAREST);
+
         std::cout << "OF 1" << std::endl;
-        
+
         // Convert to grayscale
         cv::Mat gray;
-        cv::cvtColor(img_maix, gray, cv::COLOR_BGR2GRAY);
+        cv::cvtColor(resized_img, gray, cv::COLOR_BGR2GRAY);
 
         std::cout << "OF 2" << std::endl;
-        
+
         if (first_frame) {
             prev_gray = gray.clone();
             first_frame = false;
@@ -56,7 +60,7 @@ protected:
         }
 
         std::cout << "OF 3" << std::endl;
-        
+
         // Calculate optical flow
         cv::Mat flow;
         cv::calcOpticalFlowFarneback(
@@ -71,7 +75,7 @@ protected:
         );
 
         std::cout << "OF 4" << std::endl;
-        
+
         // Split flow into x and y components
         std::vector<cv::Mat> flow_planes(2);
         std::cout << "OF 4.1" << std::endl;
@@ -80,8 +84,7 @@ protected:
         cv::Mat flow_x = flow_planes[0], flow_y = flow_planes[1];
 
         std::cout << "OF 5" << std::endl;
-        
-        // Calculate magnitude and angle
+
         // Calculate magnitude and angle
         cv::Mat magnitude, angle;
         cv::cartToPolar(flow_x, flow_y, magnitude, angle, true);
@@ -97,7 +100,7 @@ protected:
         // Convert angle to 0-180 and to CV_8U
         cv::Mat angle_8u;
         angle.convertTo(angle_8u, CV_8UC1, 1.0 / 2.0);  // Hue range [0, 180]
-        
+
         std::cout << "OF 8" << std::endl;
 
         // Saturation channel
@@ -117,25 +120,25 @@ protected:
         cv::cvtColor(hsv_image, flow_bgr, cv::COLOR_HSV2BGR);
 
         std::cout << "OF 10" << std::endl;
-        
+
         // Convert to maix image (assuming BGR format)
         maix::image::Image* flow_img = new image::Image(
-            flow_bgr.cols, flow_bgr.rows, 
+            flow_bgr.cols, flow_bgr.rows,
             image::FMT_BGR888,
             flow_bgr.data, flow_bgr.total() * flow_bgr.elemSize(),
             true
         );
 
         std::cout << "OF 11" << std::endl;
-        
+
         // Create output packet
         Packet* low_res_packet = Packet::maix_image_to_packet(flow_img, packet->emit_time_ns);
 
         std::cout << "OF 12" << std::endl;
-        
+
         // Send result
         set_pub_data_packet("output_frame", low_res_packet);
-        
+
         // Clean up
         prev_gray = gray.clone();
         delete flow_img;  // Only safe if Packet makes a deep copy
