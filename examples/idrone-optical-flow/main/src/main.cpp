@@ -64,8 +64,8 @@ protected:
             0.5,              // pyr_scale
             2,                // levels (was 3)
             5,                // winsize (was 15)
-            2,                // iterations (was 3)
-            5,                // poly_n
+            1,                // iterations (was 3)
+            3,                // poly_n
             1.1,              // poly_sigma
             cv::OPTFLOW_FARNEBACK_GAUSSIAN // faster than polynomial
         );
